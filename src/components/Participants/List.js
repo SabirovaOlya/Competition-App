@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import config from '../../config';
 
 function ParticipantsList() {
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/participants/')
+    axios.get(`${config.apiUrl}/api/participants/`)
       .then(response => {
         setParticipants(response.data);
       })

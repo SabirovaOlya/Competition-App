@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import config from '../../config';
 
 function FinalsParticipantForm() {
   const [participantId, setParticipantId] = useState('');
@@ -14,20 +15,20 @@ function FinalsParticipantForm() {
   const { id } = useParams();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/participants/')
+    axios.get(`${config.apiUrl}/api/participants/`)
       .then(response => setParticipants(response.data))
       .catch(error => console.error('Error fetching participants:', error));
 
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => setTournaments(response.data))
       .catch(error => console.error('Error fetching tournaments:', error));
 
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => setCompetitions(response.data))
       .catch(error => console.error('Error fetching competitions:', error));
 
     if (id) {
-      axios.get(`http://localhost:8000/api/finals-participants/${id}/`)
+      axios.get(`${config.apiUrl}/api/finals-participants/${id}/`)
         .then(response => {
           const data = response.data;
           setParticipantId(data.participant);
@@ -49,11 +50,11 @@ function FinalsParticipantForm() {
     };
 
     if (id) {
-      axios.put(`http://localhost:8000/api/finals-participants/${id}/`, data)
+      axios.put(`${config.apiUrl}/api/finals-participants/${id}/`, data)
         .then(() => navigate('/finals-participants'))
         .catch(error => console.error('Error updating finals participant:', error));
     } else {
-      axios.post('http://localhost:8000/api/finals-participants/', data)
+      axios.post(`${config.apiUrl}/api/finals-participants/`, data)
         .then(() => navigate('/finals-participants'))
         .catch(error => console.error('Error creating finals participant:', error));
     }

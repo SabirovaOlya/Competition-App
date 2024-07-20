@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 function PairsList() {
   const [pairs, setPairs] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/pairs/')
+    axios.get(`${config.apiUrl}/api/pairs/`)
       .then(response => {
         setPairs(response.data);
       })

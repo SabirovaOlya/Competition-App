@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import config from '../../config';
 
 function FinalsParticipantsList() {
   const [finalsParticipants, setFinalsParticipants] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/finals-participants/')
+    axios.get(`${config.apiUrl}/api/finals-participants/`)
       .then(response => setFinalsParticipants(response.data))
       .catch(error => console.error('Error fetching finals participants:', error));
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:8000/api/finals-participants/${id}/`)
+    axios.delete(`${config.apiUrl}/api/finals-participants/${id}/`)
       .then(() => setFinalsParticipants(finalsParticipants.filter(p => p.id !== id)))
       .catch(error => console.error('Error deleting finals participant:', error));
   };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 function PairParticipants() {
   const [competitionId, setCompetitionId] = useState('');
@@ -10,7 +11,7 @@ function PairParticipants() {
   const [pairs, setPairs] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => {
         setCompetitions(response.data);
       })
@@ -18,7 +19,7 @@ function PairParticipants() {
         console.error('There was an error fetching the competitions!', error);
       });
 
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => {
         setTournaments(response.data);
       })
@@ -29,7 +30,7 @@ function PairParticipants() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/pair-participants/', { 
+    axios.post(`${config.apiUrl}/api/pair-participants/`, { 
       competition_id: competitionId, 
       tournament_id: tournamentId 
     })

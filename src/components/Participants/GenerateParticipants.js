@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 function GenerateParticipants() {
   const [competitionId, setCompetitionId] = useState('');
@@ -11,7 +12,7 @@ function GenerateParticipants() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => {
         setCompetitions(response.data);
       })
@@ -19,7 +20,7 @@ function GenerateParticipants() {
         console.error('There was an error fetching the competitions!', error);
       });
 
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => {
         setTournaments(response.data);
       })
@@ -30,7 +31,7 @@ function GenerateParticipants() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/generate-participants/', { 
+    axios.post(`${config.apiUrl}/api/generate-participants/`, { 
       competition_id: competitionId, 
       tournament_id: tournamentId, 
       number_of_participants: numberOfParticipants 

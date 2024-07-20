@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import config from '../../config';
+
 
 function TournamentsList() {
   const [tournaments, setTournaments] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => {
         setTournaments(response.data);
       })

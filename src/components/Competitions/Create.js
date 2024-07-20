@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 function CreateCompetition() {
   const [name, setName] = useState('');
@@ -10,7 +11,7 @@ function CreateCompetition() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/competitions/', { name, start_date: startDate, location })
+    axios.post(`${config.apiUrl}/api/competitions/`, { name, start_date: startDate, location })
       .then(() => {
         navigate('/competitions');
       })

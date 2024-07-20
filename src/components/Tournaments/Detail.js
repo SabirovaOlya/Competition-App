@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import config from '../../config';
+
 
 function TournamentDetail() {
   const { id } = useParams();
   const [tournament, setTournament] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/tournaments/${id}/`)
+    axios.get(`${config.apiUrl}/api/tournaments/${id}/`)
       .then(response => {
         setTournament(response.data);
       })

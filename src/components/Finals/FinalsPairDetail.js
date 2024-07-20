@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
+import config from '../../config';
 
 function FinalsPairDetail() {
   const { id } = useParams();
   const [pair, setPair] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/finals-pairs/${id}/`)
+    axios.get(`${config.apiUrl}/api/finals-pairs/${id}/`)
       .then(response => setPair(response.data))
       .catch(error => console.error('Error fetching finals pair details:', error));
   }, [id]);

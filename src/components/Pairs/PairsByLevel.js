@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 function PairsByLevel() {
   const [level, setLevel] = useState('');
@@ -10,7 +11,7 @@ function PairsByLevel() {
   const [pairs, setPairs] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => {
         setCompetitions(response.data);
       })
@@ -18,7 +19,7 @@ function PairsByLevel() {
         console.error('There was an error fetching the competitions!', error);
       });
 
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => {
         setTournaments(response.data);
       })
@@ -29,7 +30,7 @@ function PairsByLevel() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/pairs-by-level/', { 
+    axios.post(`${config.apiUrl}/api/pairs-by-level/`, { 
       competition_id: competitionId, 
       tournament_id: tournamentId, 
       level: level 

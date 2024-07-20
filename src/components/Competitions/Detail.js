@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import config from '../../config';
 
 function CompetitionDetail() {
   const { id } = useParams();
   const [competition, setCompetition] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/competitions/${id}/`)
+    axios.get(`${config.apiUrl}/api/competitions/${id}/`)
       .then(response => {
         setCompetition(response.data);
       })

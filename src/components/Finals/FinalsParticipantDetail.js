@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import config from '../../config';
 
 function FinalsParticipantDetail() {
   const { id } = useParams();
   const [participant, setParticipant] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/finals-participants/${id}/`)
+    axios.get(`${config.apiUrl}/api/finals-participants/${id}/`)
       .then(response => setParticipant(response.data))
       .catch(error => console.error('Error fetching finals participant details:', error));
   }, [id]);

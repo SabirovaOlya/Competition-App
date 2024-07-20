@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import config from '../../config';
 
 function ParticipantDetail() {
   const { id } = useParams();
   const [participant, setParticipant] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/participants/${id}/`)
+    axios.get(`${config.apiUrl}/api/participants/${id}/`)
       .then(response => {
         setParticipant(response.data);
       })

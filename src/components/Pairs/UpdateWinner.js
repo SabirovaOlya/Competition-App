@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 function UpdateWinner() {
   const [pairId, setPairId] = useState('');
@@ -9,7 +10,7 @@ function UpdateWinner() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/pairs/')
+    axios.get(`${config.apiUrl}/api/pairs/`)
       .then(response => {
         setPairs(response.data);
       })
@@ -34,7 +35,7 @@ function UpdateWinner() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/update-winner/', { 
+    axios.post(`${config.apiUrl}/api/update-winner/`, { 
       pair_id: pairId, 
       winner_id: winnerId 
     })

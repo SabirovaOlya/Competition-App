@@ -13,7 +13,9 @@ RUN npm install
 # Copy the current directory contents into the container at /app
 COPY . .
 
-# Build the React app
+# Build the React app with environment variables
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 RUN npm run build
 
 # Install serve to serve the React app

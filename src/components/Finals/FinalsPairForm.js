@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import config from '../../config';
 
 function FinalsPairForm() {
   const [participant1Id, setParticipant1Id] = useState('');
@@ -16,20 +17,20 @@ function FinalsPairForm() {
   const { id } = useParams();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/finals-participants/')
+    axios.get(`${config.apiUrl}/api/finals-participants/`)
       .then(response => setFinalsParticipants(response.data))
       .catch(error => console.error('Error fetching finals participants:', error));
 
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => setCompetitions(response.data))
       .catch(error => console.error('Error fetching competitions:', error));
 
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => setTournaments(response.data))
       .catch(error => console.error('Error fetching tournaments:', error));
 
     if (id) {
-      axios.get(`http://localhost:8000/api/finals-pairs/${id}/`)
+      axios.get(`${config.apiUrl}/api/finals-pairs/${id}/`)
         .then(response => {
           const data = response.data;
           setParticipant1Id(data.participant1.id);
@@ -55,11 +56,11 @@ function FinalsPairForm() {
     };
 
     if (id) {
-      axios.put(`http://localhost:8000/api/finals-pairs/${id}/`, data)
+      axios.put(`${config.apiUrl}/api/finals-pairs/${id}/`, data)
         .then(() => navigate('/finals-pairs'))
         .catch(error => console.error('Error updating finals pair:', error));
     } else {
-      axios.post('http://localhost:8000/api/finals-pairs/', data)
+      axios.post(`${config.apiUrl}/api/finals-pairs/`, data)
         .then(() => navigate('/finals-pairs'))
         .catch(error => console.error('Error creating finals pair:', error));
     }

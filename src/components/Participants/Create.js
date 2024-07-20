@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 function CreateParticipant() {
   const [name, setName] = useState('');
@@ -13,7 +14,7 @@ function CreateParticipant() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => {
         setCompetitions(response.data);
       })
@@ -24,7 +25,7 @@ function CreateParticipant() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/participants/', { 
+    axios.post(`${config.apiUrl}/api/participants/`, { 
       name, 
       unique_id: uniqueId, // Include unique_id
       gender, 

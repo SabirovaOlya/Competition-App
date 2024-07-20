@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
+
 
 function CreateTournament() {
   const [gender, setGender] = useState(1);
@@ -12,7 +14,7 @@ function CreateTournament() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/tournaments/', { 
+    axios.post(`${config.apiUrl}/api/tournaments/`, { 
       gender, 
       min_age: minAge, 
       max_age: maxAge, 

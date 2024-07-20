@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import config from '../../config';
 
 function FinalsPairsList() {
   const [finalsPairs, setFinalsPairs] = useState([]);
@@ -10,17 +11,17 @@ function FinalsPairsList() {
   const [tournaments, setTournaments] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => setCompetitions(response.data))
       .catch(error => console.error('Error fetching competitions:', error));
 
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => setTournaments(response.data))
       .catch(error => console.error('Error fetching tournaments:', error));
   }, []);
 
   const handleFilter = () => {
-    axios.get(`http://localhost:8000/api/finals-pairs/?competition=${competitionId}&tournament=${tournamentId}`)
+    axios.get(`${config.apiUrl}/api/finals-pairs/?competition=${competitionId}&tournament=${tournamentId}`)
       .then(response => setFinalsPairs(response.data))
       .catch(error => console.error('Error fetching finals pairs:', error));
   };

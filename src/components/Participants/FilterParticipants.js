@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 function FilterParticipants() {
   const [competitionId, setCompetitionId] = useState('');
@@ -9,7 +10,7 @@ function FilterParticipants() {
   const [tournaments, setTournaments] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/competitions/')
+    axios.get(`${config.apiUrl}/api/competitions/`)
       .then(response => {
         setCompetitions(response.data);
       })
@@ -17,7 +18,7 @@ function FilterParticipants() {
         console.error('There was an error fetching the competitions!', error);
       });
 
-    axios.get('http://localhost:8000/api/tournaments/')
+    axios.get(`${config.apiUrl}/api/tournaments/`)
       .then(response => {
         setTournaments(response.data);
       })
@@ -28,7 +29,7 @@ function FilterParticipants() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/filter-participants/', { 
+    axios.post(`${config.apiUrl}/api/filter-participants/`, { 
       competition_id: competitionId, 
       tournament_id: tournamentId 
     })
@@ -36,7 +37,7 @@ function FilterParticipants() {
         setParticipants(response.data);
       })
       .catch(error => {
-        console.error('There was an error filtering participants!', error);
+        console.error(`There was an error filtering participants!`, error);
       });
   };
 
