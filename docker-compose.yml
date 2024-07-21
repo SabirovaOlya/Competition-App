@@ -1,11 +1,12 @@
+version: '3'
 services:
   frontend:
     build:
-      context: ./
+      context: .
       dockerfile: Dockerfile
-    volumes:
-      - ./build:/usr/share/nginx/html
+    container_name: competetion-front
     ports:
-      - "3000:3000"
-    environment:
-      - REACT_APP_API_URL=http://localhost:8000
+      - 3010:3010
+    volumes:
+      - .:/app  # Mount your application code into the container
+#    command: ["node", "app/.output/server/index.mjs"]
