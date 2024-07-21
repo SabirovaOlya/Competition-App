@@ -5,8 +5,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: competetion-front
+    env_file:
+      - .env
     ports:
-      - 3010:3010
+      - "3010:3010"
+      - "81:80"
     volumes:
       - .:/app  # Mount your application code into the container
-#    command: ["node", "app/.output/server/index.mjs"]
