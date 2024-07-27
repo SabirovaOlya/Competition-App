@@ -6,8 +6,6 @@ function PairRouting() {
     return (
         <Routes>
             <Route path="/" element={<PairList />} />
-            {/* <Route path="form" element={<CompetitionForm />} />
-            <Route path="single/:id" element={<CompetitionSingle />} /> */}
         </Routes>
     )
 }

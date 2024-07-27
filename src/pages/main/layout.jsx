@@ -1,32 +1,30 @@
 import { BrowserRouter } from 'react-router-dom';
-import { memo, useEffect, useRef, useState } from 'react';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import Header from '../../components/Header/Header';
-import Router from './Routes';
+import { memo, useEffect, useState } from 'react';
+import Sidebar from '../../components/sidebar';
+import Header from '../../components/header';
+import Router from './router'
 
-const name = localStorage.getItem('name')
-const photo = localStorage.getItem('photo')
-const role = JSON.parse(window.localStorage.getItem('role'))
 
-function Main({ logOutHendle }) {
-    const main_content = useRef(null)
+function Main() {
     const [sidebarActive, setSidebarActive] = useState(false)
     const [isSidebarMini, setIsSidebarMini] = useState(false)
     const [currentPath, setCurrentPath] = useState(window.location.pathname.replace(/^\/|\/$/g, ''))
 
+
     useEffect(() => {
         const handleBeforeUnload = (e) => {
-            e.preventDefault();
-            e.returnValue = '';
+           e.preventDefault();
+           e.returnValue = '';
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
-
+  
         setCurrentPath(window.location.pathname.replace(/^\/|\/$/g, ''));
-
+  
         return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+           window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, []);
+
 
     const handleChangeSidebarSize = () => {
         setIsSidebarMini(!isSidebarMini)
@@ -44,25 +42,21 @@ function Main({ logOutHendle }) {
         <div className='layout'>
             <BrowserRouter>
                 <Sidebar
-                role={role}
-                currentPath={currentPath}
-                sidebarActive={sidebarActive}
-                isSidebarMini={isSidebarMini}
-                setSidebarActive={setSidebarActive}
-                setIsSidebarMini={setIsSidebarMini}
-                closeSidebar={closeSidebar}
-                handleChangeSidebarSize={handleChangeSidebarSize}
+                    currentPath={currentPath}
+                    sidebarActive={sidebarActive}
+                    isSidebarMini={isSidebarMini}
+                    setSidebarActive={setSidebarActive}
+                    setIsSidebarMini={setIsSidebarMini}
+                    closeSidebar={closeSidebar}
+                    handleChangeSidebarSize={handleChangeSidebarSize}
                 />
 
-                <main className={isSidebarMini ? "max_size" : null} ref={main_content}>
-                <Header
-                    userInfo={{ name, role, photo }}
-                    logOutHandler={logOutHendle}
-                    onSidebarToggle={openSidebar}
-                />
-                <Router />
+                <main className={isSidebarMini ? "max_size" : null} >
+                    <Header
+                        onSidebarToggle={openSidebar}
+                    />
+                    <Router /> 
                 </main>
-                <div className={sidebarActive ? "sidebar_popup" : ""} onClick={closeSidebar}></div>
             </BrowserRouter>
         </div>
     )
