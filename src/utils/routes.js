@@ -1,66 +1,39 @@
 import Home from "../pages/home"
-
 import CompetitionRouting from '../pages/competitions/routing'
 import FinalRouting from '../pages/finals/routing'
 import PairRouting from "../pages/pairs/routing"
 import ParticipantRouting from "../pages/participants/routing"
 import TournamentRouting from '../pages/tournaments/routing'
+import CompetitionList from "../pages/competitions/list"
+import CompetitionForm from "../pages/competitions/form"
+import CompetitionSingle from "../pages/competitions/single"
 
 
 export const routes = [
     {
         path: "/",
-        children: [
-            {
-                path: "/",
-                element: Home,
-            }
-        ]
+        element: <Home />
     },
     {
-        path: "/competition",
-        children: [
-            {
-                path: "*",
-                element: CompetitionRouting,
-            },
-        ]
+        path: "/competition/*",
+        element: <CompetitionRouting />,
+
     },
     {
-        path: "/final",
-        children: [
-            {
-                path: "*",
-                element: FinalRouting
-            },
-        ]
+        path: "/final*",
+        element: <FinalRouting />
     },
     {
-        path: "/pair",
-        children: [
-            {
-                path: "*",
-                element: PairRouting
-            }
-        ]
+        path: "/pair/*",
+        element: <PairRouting />
     },
     {
-        path: "/participant",
-        children: [
-            {
-                path: "*",
-                element: ParticipantRouting
-            }
-        ]
+        path: "/participant/*",
+        element: <ParticipantRouting />
     },
     {
-        path: "/tournaments",
-        children: [
-            {
-                path: "*",
-                element: TournamentRouting
-            }
-        ]
+        path: "/tournament/*",
+        element: <TournamentRouting />
     },
 ]
 

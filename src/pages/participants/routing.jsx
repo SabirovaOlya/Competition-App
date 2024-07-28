@@ -7,9 +7,9 @@ import ParticipantSingle from './single'
 function ParticipantRouting() {
     return (
         <Routes>
-            <Route path="/" element={<ParticipantList />} />
+            <Route path="" element={<ParticipantList />} />
             <Route path="form" element={<ParticipantForm />} />
-            <Route path="single/:id" element={<ParticipantSingle />} />
+            <Route path=":id" element={<ParticipantSingle />} />
         </Routes>
     )
 }

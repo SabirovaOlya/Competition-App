@@ -9,7 +9,7 @@ function TournamentRouting() {
         <Routes>
             <Route path="/" element={<TournamentList />} />
             <Route path="form" element={<TournamentForm />} />
-            <Route path="single/:id" element={<TournamentSingle />} />
+            <Route path=":id" element={<TournamentSingle />} />
         </Routes>
     )
 }

@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 import { memo, useEffect, useState } from 'react';
-import Sidebar from '../../components/sidebar';
-import Header from '../../components/header';
+import Sidebar from '../../components/sidebar/sidebar';
+import Header from '../../components/header/header';
 import Router from './router'
 
 
@@ -53,9 +53,10 @@ function Main() {
 
                 <main className={isSidebarMini ? "max_size" : null} >
                     <Header
+                        isSidebarMini={isSidebarMini}
                         onSidebarToggle={openSidebar}
                     />
-                    <Router /> 
+                    <Router isSidebarMini={isSidebarMini}/> 
                 </main>
             </BrowserRouter>
         </div>

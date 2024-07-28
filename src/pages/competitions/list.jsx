@@ -19,7 +19,7 @@ function CompetitionList() {
   return (
     <div className="container mt-4">
       <h1>Competitions</h1>
-      <Link to="/competitions/create" className="btn btn-primary mb-2">Create Competition</Link>
+      <Link to="/competition/form" className="btn btn-primary mb-2">Create Competition</Link>
       <ul className="list-group">
         {competitions.map(competition => (
           <li key={competition.id} className="list-group-item">

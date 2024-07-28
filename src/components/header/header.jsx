@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
 import { IoMenuOutline } from "react-icons/io5";
 
+import './style.scss'
 
 
-function Header({ onSidebarToggle }) {
+
+function Header({ onSidebarToggle, isSidebarMini }) {
    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
    const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -49,21 +51,18 @@ function Header({ onSidebarToggle }) {
 
    return (
       <React.Fragment>
-         <header>
+         <header className={isSidebarMini ? 'mini_header' : ''}>
             {
                windowWidth < 992 && (
                   <div className="mobile_menu">
                      <IoMenuOutline onClick={onSidebarToggle} className='toggle' />
-                     <Link to='/'> {windowWidth < 720 ? null : <p>MatchFight</p>} </Link>
                   </div>
                )
             }
+            <Link className='logo_text' to='/'>MatchFight</Link>
             <div className='header_last'>
                <div className="full_screen_icon" onClick={handleFullScreen}>
                   <button> {isFullScreen ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />} </button>
-               </div>
-               <div className='header_info'>
-                  <h2>Hello User)))</h2>
                </div>
             </div>
          </header>
