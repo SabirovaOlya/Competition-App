@@ -181,7 +181,7 @@
     color: #fff;
 }
 
-.nav-list .ant-tabs-tab:hover a {
+.nav-list .ant-tabs-tab:hover span {
     color: white;
 }
 
@@ -193,7 +193,7 @@
     background: linear-gradient(118deg, rgb(36, 36, 225), rgba(39, 76, 224, 0.7));
 }
 
-.nav-list .ant-tabs-tab-active a {
+.nav-list .ant-tabs-tab-active span {
     color: white;
 }
 

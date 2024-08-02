@@ -7,7 +7,7 @@ import { TbTournament } from 'react-icons/tb';
 import { GoGoal } from 'react-icons/go';
 import { HiOutlineHome } from "react-icons/hi2";
 import { HiUsers } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './style.scss'
 
@@ -21,6 +21,7 @@ function Sidebar({ currentPath, sidebarActive, isSidebarMini, setSidebarActive, 
         { to: '/pair', icon: <HiUsers />, title: 'Pair', key: 5, visible: "visible" },
         { to: '/final', icon: <GiTrophyCup />, title: 'Final', key: 6, visible: "visible" },
     ]
+    const navigate = useNavigate()
 
     const keys = sidebarLink.filter(item => {
         let linkUrl = item.to.replace(/^\/|\/$/g, '').substring(0, 4);
@@ -30,7 +31,8 @@ function Sidebar({ currentPath, sidebarActive, isSidebarMini, setSidebarActive, 
     const key = keys.length > 1 ? keys[1].key.toString() : keys[0].key.toString()
     const [activeKey, setActiveKey] = useState(key);
 
-    const handleTabClick = (key) => {
+    const handleTabClick = (key, url) => {
+        navigate(url, { replace: true})
         setActiveKey(key);
         setSidebarActive(false)
     }
@@ -52,13 +54,13 @@ function Sidebar({ currentPath, sidebarActive, isSidebarMini, setSidebarActive, 
                             return (
                             <li className={`${activeKey === item?.key ? 'ant-tabs-tab-active' : 'tab'} nav-item ant-tabs-tab` }
                                 onClick={()=>{
-                                    handleTabClick(item?.key)
+                                    handleTabClick(item?.key, item?.to)
                                 }}
                             >
-                                <Link to={`${item?.to}`} className="link nav-item_icon">
+                                <span to={`${item?.to}`} className="link nav-item_icon">
                                     {item?.icon}
-                                </Link>
-                                <Link className="block link" to={`${item?.to}`}>{item?.title}</Link>
+                                </span>
+                                <span className="block link" to={`${item?.to}`}>{item?.title}</span>
                             </li>
                             )
                         })
