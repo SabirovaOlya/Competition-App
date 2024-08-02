@@ -1,8 +1,11 @@
 import Main from './pages/main/layout'
+import { NextUIProvider } from "@nextui-org/react";
 
 function App() {
   return (
-    <Main />
+    <NextUIProvider>
+      <Main />
+    </NextUIProvider>
   );
 }
 

@@ -19,7 +19,7 @@ function Header({ onSidebarToggle, isSidebarMini }) {
       return () => {
          window.removeEventListener('resize', handleWindowResize);
       };
-   });
+   }, []);
 
    const toggleFullScreen = () => {
       const elem = document.documentElement;

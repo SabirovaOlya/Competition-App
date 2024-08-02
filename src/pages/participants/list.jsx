@@ -1,32 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import config from '../../config';
+import { ListTable } from './table';
+import { https } from '../../services/https';
 
 function ParticipantList() {
+  const [participantsAll, setParticipantsAll] = useState([]);
   const [participants, setParticipants] = useState([]);
 
+  const [page, setPage] = useState(1);
+
+  const getData = async () => {
+    try {
+      const res = await https.get('/participants');
+      const { data } = res;
+      setParticipantsAll(data)
+      setParticipants(data.slice(0, 10));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const paginateData = (count) => {
+    const list = participantsAll.slice((count - 1)*10, count*10)
+    setParticipants(list)
+  }
+
   useEffect(() => {
-    axios.get(`${config.apiUrl}/api/participants/`)
-      .then(response => {
-        setParticipants(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the participants!', error);
-      });
+    getData();
   }, []);
 
+  useEffect(() => {
+    paginateData(page)
+  }, [page])
+
   return (
-    <div className="container mt-4">
-      <h1>Participants</h1>
-      <Link to="/participants/create" className="btn btn-primary mb-2">Create Participant</Link>
-      <ul className="list-group">
-        {participants.map(participant => (
-          <li key={participant.id} className="list-group-item">
-            <Link to={`/participants/${participant.id}`}>{participant.name}</Link>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <ListTable 
+        users={participants} 
+        setUsers={setParticipants}
+        users_all={participantsAll}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 }
