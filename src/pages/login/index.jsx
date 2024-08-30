@@ -25,29 +25,34 @@ const AuthForm = memo(({ onLogin }) => {
             <h2>Welcome</h2>
             <div>
                <Input 
-                  className="max-w-xs" 
+                  className="max-w-xs bg-white rounded" 
                   type="email" 
                   label="Email"
-                  variant="bordered"
                />
                <Input
                   label="Password"
-                  variant="bordered"
                   placeholder="Enter your password"
                   endContent={
                      <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                         {isVisible ? (
-                        <FaRegEye />
+                        <FaRegEye className="text-black"/>
                         ) : (
-                           <FaEyeSlash />
+                           <FaEyeSlash className="text-black"/>
                         )}
                      </button>
                   }
                   type={isVisible ? "text" : "password"}
-                  className="max-w-xs mt-3"
+                  className="max-w-xs mt-3 bg-white rounded"
                />
             </div>
-            <Button>Submit</Button>
+            <Button 
+               className="bg-blue-600 px-16 py-4 text-white font-semibold text-base"
+               onClick={() =>{
+                  window.localStorage.setItem('token', 'mytoken')
+                  window.location.reload(false);
+                  window.location.pathname = '/';
+               }}
+            >Submit</Button>
          </form>
       </div>
    )
