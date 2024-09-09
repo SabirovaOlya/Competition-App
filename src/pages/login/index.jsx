@@ -26,12 +26,21 @@ const AuthForm = memo(({ onLogin }) => {
             <div>
                <Input 
                   className="max-w-xs bg-white rounded" 
+                  placeholder="Enter your email"
                   type="email" 
                   label="Email"
+                  value={email}
+                  onChange={(e)=>{
+                     setEmail(e.target.value)
+                  }}
                />
                <Input
                   label="Password"
                   placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) =>{
+                     setPassword(e.target.value)
+                  }}
                   endContent={
                      <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                         {isVisible ? (
@@ -46,12 +55,8 @@ const AuthForm = memo(({ onLogin }) => {
                />
             </div>
             <Button 
+               type="submit"
                className="bg-blue-600 px-16 py-4 text-white font-semibold text-base"
-               onClick={() =>{
-                  window.localStorage.setItem('token', 'mytoken')
-                  window.location.reload(false);
-                  window.location.pathname = '/';
-               }}
             >Submit</Button>
          </form>
       </div>

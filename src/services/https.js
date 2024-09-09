@@ -5,6 +5,6 @@ export const https = axios.create({
     // withCredentials: true,
     headers: {
         'Accept': 'application/json;charset=utf-8',
-        // 'Authorization': "Bearer " + window.localStorage.getItem('token'),
+        'Authorization': "Bearer " + window.localStorage.getItem('token'),
     }
 })

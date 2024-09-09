@@ -15,11 +15,11 @@ import './style.scss'
 function Sidebar({ currentPath, sidebarActive, isSidebarMini, setSidebarActive, closeSidebar, handleChangeSidebarSize }) {
     const sidebarLink = [
         { to: '/', icon: <HiOutlineHome />, title: 'Home', key: 1, visible: "visible" },
-        { to: '/participant', icon: <FaRegUser />, title: 'Participant', key: 2, visible: "visible" },
-        { to: '/tournament', icon: <TbTournament />, title: 'Tournament', key: 3, visible: "visible" },
-        { to: '/competition', icon: <GoGoal />, title: 'Competition', key: 4, visible: "visible" },
-        { to: '/pair', icon: <HiUsers />, title: 'Pair', key: 5, visible: "visible" },
-        { to: '/final', icon: <GiTrophyCup />, title: 'Final', key: 6, visible: "visible" },
+        { to: '/competitions', icon: <GoGoal />, title: 'Competitions', key: 4, visible: "visible" },
+        { to: '/participants', icon: <FaRegUser />, title: 'Participants', key: 2, visible: "visible" },
+        { to: '/tournaments', icon: <TbTournament />, title: 'Tournaments', key: 3, visible: "visible" },
+        { to: '/pairs', icon: <HiUsers />, title: 'Pair', key: 5, visible: "visible" },
+        { to: '/finals', icon: <GiTrophyCup />, title: 'Final', key: 6, visible: "visible" },
     ]
     const navigate = useNavigate()
 
@@ -48,7 +48,7 @@ function Sidebar({ currentPath, sidebarActive, isSidebarMini, setSidebarActive, 
                 <button className="sidebar_resize" onClick={handleChangeSidebarSize}>
                     {!isSidebarMini ? <MdArrowBackIos /> : <MdArrowForwardIos />}
                 </button>
-                <ul className='nav-list'>
+                <ul className='nav-list mt-5'>
                     {
                         sidebarLink?.map(item => {
                             return (

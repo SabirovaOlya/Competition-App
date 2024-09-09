@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import config from '../../config';
+import { https } from '../../services/https';
 
 function CompetitionList() {
   const [competitions, setCompetitions] = useState([]);
 
   useEffect(() => {
-    axios.get(`${config.apiUrl}/api/competitions/`)
+    https.get(`/competitions/`)
       .then(response => {
         setCompetitions(response.data);
       })

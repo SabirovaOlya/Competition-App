@@ -3,10 +3,7 @@ import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
 import { DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 import { IoMenuOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
-
-
 import './style.scss'
-
 
 
 function Header({ onSidebarToggle, isSidebarMini }) {

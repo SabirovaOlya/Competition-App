@@ -2,12 +2,25 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import config from '../../config';
+import { https } from '../../services/https';
 
 function CompetitionSingle() {
   const { id } = useParams();
   const [competition, setCompetition] = useState(null);
 
+  const getData = async() =>{
+    try{
+      const res = await https.get(`/competitions/${id}`)
+      const { data } = res;
+      setCompetition(data)
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
+
     axios.get(`${config.apiUrl}/api/competitions/${id}/`)
       .then(response => {
         setCompetition(response.data);

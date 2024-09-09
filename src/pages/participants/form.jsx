@@ -1,83 +1,139 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
-import config from '../../config';
+import { Input, Select, SelectItem } from '@nextui-org/react';
+import { https } from '../../services/https';
+import { genders } from '../../utils/constants';
+import { BackButton } from '../../components/buttons/BackButton';
+import { alert } from '../../components/alert/alert'
+
 
 function ParticipantForm() {
-  const [name, setName] = useState('');
-  const [uniqueId, setUniqueId] = useState(''); // New state for unique_id
-  const [gender, setGender] = useState(1);
-  const [age, setAge] = useState('');
-  const [weight, setWeight] = useState('');
-  const [competitionId, setCompetitionId] = useState('');
+  const { register, handleSubmit } = useForm()
+  const [selectedGender, setSelectedGender] = useState(genders[0])
+  const [selectedCompetition, setSelectedCompetition] = useState(null);
   const [competitions, setCompetitions] = useState([]);
   const navigate = useNavigate();
 
+  const getCompetitions = async() =>{
+    try{
+      const res = await https.get('/competitions/')
+      const { data } = res;
+      const comps = data?.map(item => ({ value: item?.id, label: item?.name}))
+      setCompetitions(comps)
+      setSelectedCompetition(comps[0] || null)
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
-    axios.get(`${config.apiUrl}/api/competitions/`)
-      .then(response => {
-        setCompetitions(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the competitions!', error);
-      });
+    getCompetitions()
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    axios.post(`${config.apiUrl}/api/participants/`, { 
-      name, 
-      unique_id: uniqueId, // Include unique_id
-      gender, 
-      age, 
-      weight, 
-      competition: competitionId 
-    })
-      .then(() => {
-        navigate('/participants');
-      })
-      .catch(error => {
-        console.error('There was an error creating the participant!', error.response ? error.response.data : error);
-      });
+  const handleSubmitt = (event) => {
+    // event.preventDefault();
+    // axios.post(`${config.apiUrl}/api/participants/`, { 
+    //   name, 
+    //   unique_id: uniqueId, // Include unique_id
+    //   gender, 
+    //   age, 
+    //   weight, 
+    //   competition: competitionId 
+    // })
+    //   .then(() => {
+    //     navigate('/participants');
+    //   })
+    //   .catch(error => {
+    //     console.error('There was an error creating the participant!', error.response ? error.response.data : error);
+    //   });
   };
+
+  const onSubmit = async(data) =>{
+    const info = {
+      ...data,
+      unique_id: data.unique_id, 
+      age: Number(data.age),
+      weight: data.weight ? Number(data.weight) : null, 
+      competition: selectedCompetition?.value,
+      gender: selectedGender?.value === 'male' ? 1 : 0,
+    };
+
+    try{
+      const res = await https.post('participants', info)
+      const { data } = res;
+      alert("Successfully created", 'success');
+      navigate(`/participants`, { replace: true });
+      // navigate(`/participants/single/${data.id}`, { replace: true });
+    }
+    catch(err){
+      alert(err?.response?.data?.message, 'error');
+      console.log(err);
+    }
+  }
 
   return (
     <div className="container mt-4">
-      <h1>Create Participant</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Name:</label>
-          <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Unique ID:</label> {/* New input field for unique_id */}
-          <input type="text" className="form-control" value={uniqueId} onChange={(e) => setUniqueId(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Gender:</label>
-          <select className="form-select" value={gender} onChange={(e) => setGender(Number(e.target.value))}>
-            <option value={1}>Male</option>
-            <option value={0}>Female</option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Age:</label>
-          <input type="number" className="form-control" value={age} onChange={(e) => setAge(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Weight:</label>
-          <input type="number" step="0.01" className="form-control" value={weight} onChange={(e) => setWeight(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Competition:</label>
-          <select className="form-select" value={competitionId} onChange={(e) => setCompetitionId(e.target.value)} required>
-            <option value="">Select Competition</option>
-            {competitions.map(competition => (
-              <option key={competition.id} value={competition.id}>{competition.name}</option>
+      <BackButton path={'/participants'}/>
+      <h3 className='text-center'>Participant Form</h3>
+      <form onSubmit={handleSubmit(onSubmit)} className='mt-8'>
+        <div className='bg-white grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <Input 
+            type="text" 
+            variant={'bordered'} 
+            label="Name:" 
+            {...register("name", { required: true })}
+          />
+          <Input 
+            type="string" 
+            variant={'bordered'} 
+            label="Unique ID:" 
+            {...register("unique_id", { required: true })}
+          />
+          <Select 
+            label="Gender" 
+            className="bg-white w-full select_input" 
+            defaultSelectedKeys={[selectedGender?.value]}
+            value={[selectedGender?.value]}
+          >
+            {genders?.map((gender) => (
+              <SelectItem key={gender?.value} className='bg-white select_input'>
+                {gender?.label}
+              </SelectItem>
             ))}
-          </select>
+          </Select>
+          <Input 
+            type="number" 
+            variant={'bordered'} 
+            label="Age" 
+            {...register("age", { required: true })}
+          />
+          <Input 
+            type="number" 
+            variant={'bordered'} 
+            label="Weight" 
+            {...register("weight", { required: false })}
+          />
+          <Select 
+            label="Competition" 
+            color='white'
+            className="bg-white w-full" 
+            defaultSelectedKeys={[selectedCompetition?.value]}
+            value={[selectedCompetition?.value]}
+          >
+            {competitions?.map((comp) => (
+              <SelectItem key={comp?.value} className='bg-white'>
+                {comp?.label}
+              </SelectItem>
+            ))}
+          </Select>
         </div>
-        <button type="submit" className="btn btn-primary">Create</button>
+        <div className='flex justify-end'>
+          <button type="submit" 
+            className="btn btn-primary mt-8 py-2 px-4"
+          >Create</button>
+        </div>
       </form>
     </div>
   );

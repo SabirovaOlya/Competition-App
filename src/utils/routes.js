@@ -4,9 +4,6 @@ import FinalRouting from '../pages/finals/routing'
 import PairRouting from "../pages/pairs/routing"
 import ParticipantRouting from "../pages/participants/routing"
 import TournamentRouting from '../pages/tournaments/routing'
-import CompetitionList from "../pages/competitions/list"
-import CompetitionForm from "../pages/competitions/form"
-import CompetitionSingle from "../pages/competitions/single"
 
 
 export const routes = [
@@ -15,24 +12,24 @@ export const routes = [
         element: <Home />
     },
     {
-        path: "/competition/*",
+        path: "/participants/*",
+        element: <ParticipantRouting />
+    },
+    {
+        path: "/competitions/*",
         element: <CompetitionRouting />,
 
     },
     {
-        path: "/final*",
+        path: "/finals/*",
         element: <FinalRouting />
     },
     {
-        path: "/pair/*",
+        path: "/pairs/*",
         element: <PairRouting />
     },
     {
-        path: "/participant/*",
-        element: <ParticipantRouting />
-    },
-    {
-        path: "/tournament/*",
+        path: "/tournaments/*",
         element: <TournamentRouting />
     },
 ]

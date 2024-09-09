@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaUser, FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import {
   Table,
@@ -8,10 +9,6 @@ import {
   TableRow,
   TableCell,
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
   Pagination,
 } from "@nextui-org/react";
@@ -31,6 +28,7 @@ const columns = [
 ];
 
 export function ListTable({ users, page, setPage, users_all }) {
+    const navigate = useNavigate()
     const rowsPerPage = 10
     const headerColumns = columns;
 
@@ -74,7 +72,9 @@ export function ListTable({ users, page, setPage, users_all }) {
             case "actions":
                 return (
                 <div className="relative flex justify-center items-center gap-1">
-                    <button className='p-2 border rounded-md border-blue-500 text-blue-500'><FaUser /></button>
+                    <button 
+                        onClick={() =>{navigate(`/participants/${user?.id}`)}}
+                        className='p-2 border rounded-md border-blue-500 text-blue-500'><FaUser /></button>
                     <button className='p-2 border rounded-md border-blue-500 text-green-500'><FaRegEdit /></button>
                     <button className='p-2 border rounded-md border-blue-500 text-red-500'><FaRegTrashAlt /></button>
                 </div>
