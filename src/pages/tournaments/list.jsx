@@ -1,35 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import config from '../../config';
+import { useNavigate } from 'react-router-dom';
+import { https } from '../../services/https';
+import { ListTable } from './table';
+import { paginationCount } from '../../utils/constants';
+import { PageTitle } from '../../components/content-header/PageTitle';
+import { alert } from '../../components/alert/alert';
 
 
-function TournamentList() {
+function CompetitionList() {
+  const navigate = useNavigate()
   const [tournaments, setTournaments] = useState([]);
+  const [tournamentsAll, setTournamentsAll] = useState([]);
+  const [page, setPage] = useState(1);
+
+
+  const getData = async () => {
+    try {
+      const res = await https.get('/tournaments');
+      const { data } = res;
+      setTournamentsAll(data)
+      setTournaments(data.slice(0, paginationCount));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const paginateData = (count) => {
+    const list = tournamentsAll.slice((count - 1)*paginationCount, count*paginationCount)
+    setTournaments(list)
+  }
+
+  const onNavigate = () =>{
+    navigate('/tournaments/form', { replace: true })
+  }
 
   useEffect(() => {
-    axios.get(`${config.apiUrl}/api/tournaments/`)
-      .then(response => {
-        setTournaments(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the tournaments!', error);
-      });
+    getData();
   }, []);
 
+  useEffect(() => {
+    paginateData(page)
+  }, [page])
+
+  const onDelete = async(id) => {
+    try {
+      const res = await https.delete(`/tournaments/${id}`)
+      const { data } = res;
+
+      getData()
+    }
+    catch(err) {
+      alert('Error', 'error')
+    }
+  }
+
   return (
-    <div className="container mt-4">
-      <h1>Tournaments</h1>
-      <Link to="/tournaments/create" className="btn btn-primary mb-2">Create Tournament</Link>
-      <ul className="list-group">
-        {tournaments.map(tournament => (
-          <li key={tournament.id} className="list-group-item">
-            <Link to={`/tournaments/${tournament.id}`}>{tournament.id} | {`${tournament.gender === 1 ? 'Male' : 'Female'} ${tournament.min_age}-${tournament.max_age} years ${tournament.min_weight}-${tournament.max_weight} kg`}</Link>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <PageTitle title={'Tournaments'} onNavigate={onNavigate}/>
+      <ListTable 
+        tournaments={tournaments} 
+        setCompetitions={setTournaments}
+        tournaments_all={tournamentsAll}
+        page={page}
+        setPage={setPage}
+        onDelete={onDelete}
+      />
     </div>
   );
 }
 
-export default TournamentList;
+export default CompetitionList;

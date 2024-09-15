@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import { deleteWarning } from '../../components/alert/alert';
 
+
 const statusColorMap = {
     0: "danger",
     1: "primary",
@@ -21,73 +22,71 @@ const statusColorMap = {
 
 const columns = [
   {name: "ID", uid: "id"},
-  {name: "NAME", uid: "name"},
-  {name: "AGE", uid: "age"},
-  {name: "WEIGHT", uid: "weight"},
   {name: "GENDER", uid: "gender"},
+  {name: "AGE", uid: "max_age"},
+  {name: "WEIGHT", uid: "max_weight"},
   {name: "ACTIONS", uid: "actions"},
 ];
 
-export function ListTable({ users, page, setPage, users_all, onDelete }) {
+export function ListTable({ tournaments, page, setPage, tournaments_all, onDelete }) {
     const navigate = useNavigate()
     const rowsPerPage = 10
     const headerColumns = columns;
 
-    const pages = Math.ceil(users_all.length / rowsPerPage);
+    const pages = Math.ceil(tournaments_all.length / rowsPerPage);
 
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
 
-        return users.slice(start, end);
-    }, [page, users, rowsPerPage]);
+        return tournaments_all.slice(start, end);
+    }, [page, tournaments, rowsPerPage, tournaments_all]);
 
 
-    const renderCell = useCallback((user, columnKey) => {
-        const cellValue = user[columnKey];
+    const renderCell = useCallback((tournament, columnKey) => {
+        const cellValue = tournament[columnKey];
         switch (columnKey) {
-            case "name":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
-            case "age":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
-            case "weight":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
             case "gender":
                 return (
-                    <Chip className="capitalize" color={statusColorMap[user.gender]} size="md" variant="flat">
+                    <Chip className="capitalize" color={statusColorMap[tournament.gender]} size="md" variant="flat">
                         {cellValue === 1 ? 'Boy' : 'Girl'}
                     </Chip>
+                );
+            case "max_age":
+                return (
+                    <div className='flex items-center justify-center h-full'>
+                        <p className="text-bold text-small">{tournament.min_age} - {tournament.max_age} years</p>
+                    </div>
+                );
+            case "max_weight":
+                return (
+                    <div className='flex items-center justify-center h-full'>
+                        <p className="text-bold text-small">{tournament.min_weight} - {tournament.max_weight} kg</p>
+                    </div>
                 );
             case "actions":
                 return (
                 <div className="relative flex justify-center items-center gap-1">
                     <button 
-                        onClick={() =>{navigate(`/participants/${user?.id}`)}}
+                        onClick={() =>{navigate(`/tournaments/${tournament?.id}`)}}
                         className='p-2 border rounded-md border-blue-500 text-blue-500'
                     ><FaUser /></button>
                     <button 
+                        onClick={() =>{navigate(`/tournaments/edit/${tournament?.id}`)}}
                         className='p-2 border rounded-md border-blue-500 text-green-500'
                     ><FaRegEdit /></button>
                     <button 
-                        onClick={() => {deleteWarning(onDelete, user?.id)}}
+                        onClick={() => {deleteWarning(onDelete, tournament?.id)}}
                         className='p-2 border rounded-md border-blue-500 text-red-500'
                     ><FaRegTrashAlt /></button>
                 </div>
                 );
             default:
-                return cellValue;
+                return (
+                    <div className='flex items-center justify-center'>
+                        <p className="text-bold text-small capitalize">{cellValue}</p>
+                    </div>
+                );
         }
     }, []);
 
@@ -142,14 +141,14 @@ export function ListTable({ users, page, setPage, users_all, onDelete }) {
                 {(column) => (
                 <TableColumn
                     key={column.uid}
-                    align={column.uid === "actions" ? "center" : "start"}
+                    align={"center"}
                     allowsSorting={column.sortable}
                 >
                     {column.name}
                 </TableColumn>
                 )}
             </TableHeader>
-            <TableBody emptyContent={"No users found"} items={users}>
+            <TableBody emptyContent={"No tournaments found"} items={tournaments}>
                 {(item) => (
                 <TableRow key={item.id}>
                     {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

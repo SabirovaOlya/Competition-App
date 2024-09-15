@@ -106,6 +106,9 @@ function ParticipantForm() {
             className="bg-white w-full select_input" 
             defaultSelectedKeys={[selectedGender?.value]}
             value={[selectedGender?.value]}
+            onChange={(e) => {
+              setSelectedGender(genders?.find(x => x?.value === e.target.value));
+            }}
           >
             {genders?.map((gender) => (
               <SelectItem key={gender?.value} className='bg-white select_input'>
@@ -114,13 +117,15 @@ function ParticipantForm() {
             ))}
           </Select>
           <Input 
-            type="number" 
+            type="number"
+            onWheel={(e) => e.target.blur()} 
             variant={'bordered'} 
             label="Age" 
             {...register("age", { required: true })}
           />
           <Input 
-            type="number" 
+            type="number"
+            onWheel={(e) => e.target.blur()} 
             variant={'bordered'} 
             label="Weight" 
             {...register("weight", { required: false })}

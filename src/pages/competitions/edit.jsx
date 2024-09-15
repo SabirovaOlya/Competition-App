@@ -63,9 +63,9 @@ function CompetitionEdit() {
             label="Name" 
             value={competition?.name}
             onChange={(e) => {
-                let newData = {...competition}
-                newData.name = e.target.value
-                setCompetition(newData)
+              let newData = {...competition}
+              newData.name = e.target.value
+              setCompetition(newData)
             }}
           />
           <Input 
@@ -74,9 +74,9 @@ function CompetitionEdit() {
             label="Start Date" 
             value={competition?.start_date}
             onChange={(e) => {
-                let newData = {...competition}
-                newData.start_date = e.target.value
-                setCompetition(newData)
+              let newData = {...competition}
+              newData.start_date = e.target.value
+              setCompetition(newData)
             }}
           />
           <Input 
@@ -85,9 +85,9 @@ function CompetitionEdit() {
             label="Location" 
             value={competition?.location}
             onChange={(e) => {
-                let newData = {...competition}
-                newData.location = e.target.value
-                setCompetition(newData)
+              let newData = {...competition}
+              newData.location = e.target.value
+              setCompetition(newData)
             }}
           />
         </div>
