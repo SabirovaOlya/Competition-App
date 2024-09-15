@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { https } from '../../services/https';
+import { BackButton } from '../../components/buttons/BackButton';
+import user_default from '../../assets/images/user.png'
+import './style.scss'
+
 
 function ParticipantSingle() {
   const { id } = useParams();
@@ -21,15 +25,21 @@ function ParticipantSingle() {
     getData()
   }, [id]);
 
-  if (!participant) return <div>Loading...</div>;
-
   return (
     <div className="container mt-4">
-      <h1>{participant?.name}</h1>
-      <p><strong>Gender:</strong> {participant?.gender === 1 ? 'Male' : 'Female'}</p>
-      <p><strong>Age:</strong> {participant?.age}</p>
-      <p><strong>Weight:</strong> {participant?.weight}</p>
-      <p><strong>Competition:</strong> {participant?.competition?.name}</p>
+      <BackButton path={'/participants'} />
+      <h1 className='text-center'>{participant?.name}</h1>
+      <div className='card_container'>
+        <div className='image_wrapper'>
+          <img src={user_default} alt='participant image' />
+        </div>
+        <div className='text_details'>
+          <p className='mt-3'><strong>Age:</strong> {participant?.age} years</p>
+          <p className='mt-3'><strong>Gender:</strong> {participant?.gender === 1 ? 'Male' : 'Female'}</p>
+          <p className='mt-3'><strong>Weight:</strong> {participant?.weight} kg</p>
+          <p className='mt-3'><strong>Competition:</strong> {participant?.competition_details?.name}</p>
+        </div>
+      </div>
     </div>
   );
 }

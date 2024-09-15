@@ -52,7 +52,7 @@ function Sidebar({ currentPath, sidebarActive, isSidebarMini, setSidebarActive, 
                     {
                         sidebarLink?.map(item => {
                             return (
-                            <li className={`${activeKey === item?.key ? 'ant-tabs-tab-active' : 'tab'} nav-item ant-tabs-tab` }
+                            <li key={item?.key} className={`${activeKey === item?.key ? 'ant-tabs-tab-active' : 'tab'} nav-item ant-tabs-tab` }
                                 onClick={()=>{
                                     handleTabClick(item?.key, item?.to)
                                 }}

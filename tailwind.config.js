@@ -10,5 +10,11 @@ module.exports = {
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      layout: {
+        ariaLabel: "NextUI Layout",
+      },
+    }),
+  ],
 };

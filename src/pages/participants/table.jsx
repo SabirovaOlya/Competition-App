@@ -12,6 +12,7 @@ import {
   Chip,
   Pagination,
 } from "@nextui-org/react";
+import { deleteWarning } from '../../components/alert/alert';
 
 const statusColorMap = {
   1: "primary",
@@ -27,7 +28,7 @@ const columns = [
   {name: "ACTIONS", uid: "actions"},
 ];
 
-export function ListTable({ users, page, setPage, users_all }) {
+export function ListTable({ users, page, setPage, users_all, onDelete }) {
     const navigate = useNavigate()
     const rowsPerPage = 10
     const headerColumns = columns;
@@ -74,9 +75,15 @@ export function ListTable({ users, page, setPage, users_all }) {
                 <div className="relative flex justify-center items-center gap-1">
                     <button 
                         onClick={() =>{navigate(`/participants/${user?.id}`)}}
-                        className='p-2 border rounded-md border-blue-500 text-blue-500'><FaUser /></button>
-                    <button className='p-2 border rounded-md border-blue-500 text-green-500'><FaRegEdit /></button>
-                    <button className='p-2 border rounded-md border-blue-500 text-red-500'><FaRegTrashAlt /></button>
+                        className='p-2 border rounded-md border-blue-500 text-blue-500'
+                    ><FaUser /></button>
+                    <button 
+                        className='p-2 border rounded-md border-blue-500 text-green-500'
+                    ><FaRegEdit /></button>
+                    <button 
+                        onClick={() => {deleteWarning(onDelete, user?.id)}}
+                        className='p-2 border rounded-md border-blue-500 text-red-500'
+                    ><FaRegTrashAlt /></button>
                 </div>
                 );
             default:

@@ -4,6 +4,7 @@ import { ListTable } from './table';
 import { https } from '../../services/https';
 import { paginationCount } from '../../utils/constants';
 import { PageTitle } from '../../components/content-header/PageTitle';
+import { alert } from '../../components/alert/alert';
 
 function ParticipantList() {
   const navigate = useNavigate()
@@ -39,8 +40,32 @@ function ParticipantList() {
     paginateData(page)
   }, [page])
 
+
+  const onDelete = async(id) => {
+    try {
+      const res = await https.delete(`/participants/${id}`)
+      const { data } = res;
+
+      getData()
+
+      // const filteredList = participantsAll?.filter(x => x?.id !== id)
+      // setParticipantsAll(filteredList)
+      
+      // const totalPages = Math.ceil(filteredList.length / paginationCount);
+      // if (page > totalPages) {
+      //   setPage(totalPages);
+      // } else {
+      //   paginateData(page);
+      // }
+    }
+    catch(err) {
+      alert('Error', 'error')
+    }
+  }
+
   return (
     <div>
+      {console.log(participants, participantsAll)}
       <PageTitle title={'Participants'} onNavigate={onNavigate}/>
       <ListTable 
         users={participants} 
@@ -48,6 +73,7 @@ function ParticipantList() {
         users_all={participantsAll}
         page={page}
         setPage={setPage}
+        onDelete={onDelete}
       />
     </div>
   );
