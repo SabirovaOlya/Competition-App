@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import config from '../../config';
+import { IoCalendarNumber } from "react-icons/io5";
+import { FaLocationDot } from "react-icons/fa6";
 import { https } from '../../services/https';
+import { BackButton } from '../../components/buttons/BackButton';
+import { dateConvert } from '../../utils/functions/date';
+
 
 function CompetitionSingle() {
   const { id } = useParams();
@@ -20,23 +23,29 @@ function CompetitionSingle() {
   }
 
   useEffect(() => {
-
-    axios.get(`${config.apiUrl}/api/competitions/${id}/`)
-      .then(response => {
-        setCompetition(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the competition!', error);
-      });
+    getData()
   }, [id]);
-
-  if (!competition) return <div>Loading...</div>;
 
   return (
     <div className="container mt-4">
-      <h1>{competition.name}</h1>
-      <p><strong>Start Date:</strong> {competition.start_date}</p>
-      <p><strong>Location:</strong> {competition.location}</p>
+      <BackButton path={'/competitions'} />
+      <h2 className='text-center'>{competition?.name}</h2>
+      <table className="table-auto border border-collapse w-full mt-6">
+        <tbody>
+          <tr className="border">
+            <td className="px-4 py-2 flex items-center">
+              <IoCalendarNumber className="mr-2" /> Start Date
+            </td>
+            <td className="border px-4 py-2">{dateConvert(competition?.start_date)}</td>
+          </tr>
+          <tr className="border">
+            <td className="px-4 py-2  flex items-center">
+              <FaLocationDot className="mr-2" /> Location
+            </td>
+            <td className="border px-4 py-2">{competition?.location}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }

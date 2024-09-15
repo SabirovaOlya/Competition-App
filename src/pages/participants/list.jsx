@@ -65,7 +65,6 @@ function ParticipantList() {
 
   return (
     <div>
-      {console.log(participants, participantsAll)}
       <PageTitle title={'Participants'} onNavigate={onNavigate}/>
       <ListTable 
         users={participants} 

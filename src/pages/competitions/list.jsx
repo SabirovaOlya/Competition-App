@@ -1,33 +1,70 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import config from '../../config';
+import { useNavigate } from 'react-router-dom';
 import { https } from '../../services/https';
+import { ListTable } from './table';
+import { paginationCount } from '../../utils/constants';
+import { PageTitle } from '../../components/content-header/PageTitle';
+import { alert } from '../../components/alert/alert';
+
 
 function CompetitionList() {
+  const navigate = useNavigate()
   const [competitions, setCompetitions] = useState([]);
+  const [competitionsAll, setCompetitionsAll] = useState([]);
+  const [page, setPage] = useState(1);
+
+
+  const getData = async () => {
+    try {
+      const res = await https.get('/competitions');
+      const { data } = res;
+      setCompetitionsAll(data)
+      setCompetitions(data.slice(0, paginationCount));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const paginateData = (count) => {
+    const list = competitionsAll.slice((count - 1)*paginationCount, count*paginationCount)
+    setCompetitions(list)
+  }
+
+  const onNavigate = () =>{
+    navigate('/competitions/form', { replace: true })
+  }
 
   useEffect(() => {
-    https.get(`/competitions/`)
-      .then(response => {
-        setCompetitions(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the competitions!', error);
-      });
+    getData();
   }, []);
 
+  useEffect(() => {
+    paginateData(page)
+  }, [page])
+
+  const onDelete = async(id) => {
+    try {
+      const res = await https.delete(`/competitions/${id}`)
+      const { data } = res;
+
+      getData()
+    }
+    catch(err) {
+      alert('Error', 'error')
+    }
+  }
+
   return (
-    <div className="container mt-4">
-      <h1>Competitions</h1>
-      <Link to="/competition/form" className="btn btn-primary mb-2">Create Competition</Link>
-      <ul className="list-group">
-        {competitions.map(competition => (
-          <li key={competition.id} className="list-group-item">
-            <Link to={`/competitions/${competition.id}`}>{competition.name}</Link>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <PageTitle title={'Competitions'} onNavigate={onNavigate}/>
+      <ListTable 
+        competitions={competitions} 
+        setCompetitions={setCompetitions}
+        competitions_all={competitionsAll}
+        page={page}
+        setPage={setPage}
+        onDelete={onDelete}
+      />
     </div>
   );
 }

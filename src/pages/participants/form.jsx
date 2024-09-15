@@ -68,7 +68,7 @@ function ParticipantForm() {
     formData.append('image', sourceImages[0] ? sourceImages[0] : null);
 
     try {
-      const res = await https.post('participants', formData, {
+      const res = await https.post('/participants', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
