@@ -1,0 +1,150 @@
+/* Header */
+header {
+    width: calc(100vw - 230px);
+    margin-left: 230px;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding-right: 20px;
+    padding-left: 20px;
+    box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.178);
+    z-index: 100;
+}
+
+.mini_header{
+    width: calc(100vw - 80px);
+    margin-left: 70px !important;
+}
+  
+.mobile_menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.toggle {
+    font-size: 2rem;
+    margin-right: 20px;
+    color: #686868;
+    cursor: pointer;
+}
+
+.header_last {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    padding-top: 10px;
+}
+
+.header_info {
+    height: 80%;
+    margin-right: 10px;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header_info h2 {
+    font-size: .8rem;
+}
+
+.header_info p {
+    font-size: .8rem;
+    color: #686868;
+}
+
+.MuiAvatar-img {
+    cursor: pointer;
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+    padding: 0 !important;
+}
+
+.header_dropdown_item {
+    display: flex;
+    align-items: center;
+    color: #686868;
+    transition: linear all 0.2s;
+    cursor: pointer;
+}
+
+.header_dropdown_item p {
+    margin-bottom: 3px;
+    margin-left: 5px;
+}
+
+.header_dropdown_icon {
+    font-size: 10px;
+}
+
+.full_screen_icon {
+    height: 85%;
+    display: flex;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.full_screen_icon button {
+    position: relative;
+    height: 0;
+    outline: none;
+    border: 0;
+    transform: translateY(10px);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.full_screen_icon svg {
+    font-size: 25px;
+    border: 1px solid #363636;
+    border-radius: 3px;
+    color: #363636;
+}
+
+.logo_text{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+@media (max-width: 992px) {
+    header {
+        width: 100vw;
+        margin-left: 0;
+    }
+
+    .mini_header{
+        width: 100vw;
+        margin-left: 0;
+    }
+
+    .mobile_menu {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+@media (max-width: 720px){
+    .mobile_menu img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .full_screen_icon {
+        display: none;
+        visibility: hidden;
+    }
+}
+  
+  
