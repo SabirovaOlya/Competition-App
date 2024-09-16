@@ -65,20 +65,24 @@ function TournamentEdit() {
         <h3 className='text-center'>Tournament Edit-Form</h3>
         <form onSubmit={handleSubmit(onSubmit)} className='mt-8 px-4'>
             <div className='bg-white grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <Select 
-                label="Gender" 
-                className="bg-white w-full select_input" 
-                defaultSelectedKeys={[selectedGender?.value || (tournament?.gender === 1 ? 'male' : 'female')]}
-                onChange={(e) => {
-                    setSelectedGender(genders?.find(x => x?.value === e.target.value));
-                }}
-            >
-                {genders?.map((gender) => (
-                <SelectItem key={gender?.value} className='bg-white select_input'>
-                    {gender?.label}
-                </SelectItem>
-                ))}
-            </Select>
+            {
+                tournament ?
+                <Select 
+                    label="Gender" 
+                    className="bg-white w-full select_input" 
+                    defaultSelectedKeys={[selectedGender?.value || (tournament?.gender === 1 ? 'male' : tournament?.gender === 0 ? 'female' : '')]}
+                    onChange={(e) => {
+                        setSelectedGender(genders?.find(x => x?.value === e.target.value));
+                    }}
+                >
+                    {genders?.map((gender) => (
+                    <SelectItem key={gender?.value} className='bg-white select_input'>
+                        {gender?.label}
+                    </SelectItem>
+                    ))}
+                </Select>
+                : <></>
+            }
             <Input 
                 type="number"
                 onWheel={(e) => e.target.blur()} 
