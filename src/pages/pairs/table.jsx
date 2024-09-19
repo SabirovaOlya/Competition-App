@@ -23,11 +23,12 @@ const statusColorMap = {
 const columns = [
   {name: "ID", uid: "id"},
   {name: "COMPETITION", uid: "competition"},
-  {name: "TOURNAMENT", uid: "tournament"},
+  {name: "GENDER", uid: "tournament"},
   {name: "LEVEL", uid: "level"},
   {name: "PARTICIPANT-1", uid: "participant1"},
   {name: "PARTICIPANT-1", uid: "participant2"},
-  {name: "WINNER", uid: "winner"},
+//   {name: "WINNER", uid: "winner"},
+    {name: "ACTIONS", uid: "actions"},
 ];
 
 export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
@@ -55,9 +56,9 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
                 );
             case "tournament":
                 return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue?.gender}</p>
-                    </div>
+                    <Chip className="capitalize" color={statusColorMap[pair?.tournament?.gender]} size="md" variant="flat">
+                        {cellValue === 1 ? 'Boy' : 'Girl'}
+                    </Chip>
                 );
             case "level":
                 return (
@@ -65,27 +66,34 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
                         <p className="text-bold text-small capitalize">{cellValue}</p>
                     </div>
                 );
-            case "gender":
+            case "participant1":
                 return (
-                    <Chip className="capitalize" color={statusColorMap[pair.gender]} size="md" variant="flat">
-                        {cellValue === 1 ? 'Boy' : 'Girl'}
-                    </Chip>
+                    <div className="flex flex-col">
+                        <p className="text-bold text-small capitalize">{cellValue?.name}</p>
+                    </div>
+                );
+            case "participant2":
+                return (
+                    <div className="flex flex-col">
+                        <p className="text-bold text-small capitalize">{cellValue?.name}</p>
+                    </div>
                 );
             case "actions":
                 return (
-                <div className="relative flex justify-center items-center gap-1">
-                    <button 
-                        onClick={() =>{navigate(`/participants/${pair?.id}`)}}
-                        className='p-2 border rounded-md border-blue-500 text-blue-500'
-                    ><FaUser /></button>
-                    <button 
-                        className='p-2 border rounded-md border-blue-500 text-green-500'
-                    ><FaRegEdit /></button>
-                    <button 
-                        onClick={() => {deleteWarning(onDelete, pair?.id)}}
-                        className='p-2 border rounded-md border-blue-500 text-red-500'
-                    ><FaRegTrashAlt /></button>
-                </div>
+                    <div className="relative flex justify-center items-center gap-1">
+                        <button 
+                            onClick={() =>{navigate(`/pairs/${pair?.id}`)}}
+                            className='p-2 border rounded-md border-blue-500 text-blue-500'
+                        ><FaUser /></button>
+                        <button 
+                            onClick={() =>{navigate(`/pairs/edit/${pair?.id}`)}}
+                            className='p-2 border rounded-md border-blue-500 text-green-500'
+                        ><FaRegEdit /></button>
+                        <button 
+                            onClick={() => {deleteWarning(onDelete, pair?.id)}}
+                            className='p-2 border rounded-md border-blue-500 text-red-500'
+                        ><FaRegTrashAlt /></button>
+                    </div>
                 );
             default:
                 return cellValue;
@@ -94,13 +102,13 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
 
     const onNextPage = useCallback(() => {
         if (page < pages) {
-        setPage(page + 1);
+            setPage(page + 1);
         }
     }, [page, pages]);
 
     const onPreviousPage = useCallback(() => {
         if (page > 1) {
-        setPage(page - 1);
+            setPage(page - 1);
         }
     }, [page]);
 

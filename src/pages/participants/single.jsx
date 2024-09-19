@@ -31,7 +31,7 @@ function ParticipantSingle() {
       <h1 className='text-center'>{participant?.name}</h1>
       <div className='card_container'>
         <div className='image_wrapper'>
-          <img src={user_default} alt='participant image' />
+          <img src={participant?.image ? participant?.image : user_default} alt='participant image' />
         </div>
         <div className='text_details'>
           <p className='mt-3'><strong>Age:</strong> {participant?.age} years</p>
