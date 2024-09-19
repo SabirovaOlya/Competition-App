@@ -9,79 +9,86 @@ import {
   TableRow,
   TableCell,
   Button,
+  Chip,
   Pagination,
 } from "@nextui-org/react";
 import { deleteWarning } from '../../components/alert/alert';
-import { dateConvert } from '../../utils/functions/date';
-import { paginationCount } from '../../utils/constants'; 
+import { paginationCount } from '../../utils/constants';
 
+const statusColorMap = {
+    0: "danger",
+    1: "primary",
+};
 
 const columns = [
   {name: "ID", uid: "id"},
-  {name: "NAME", uid: "name"},
-  {name: "START-DATE", uid: "start_date"},
-  {name: "LOCATION", uid: "location"},
-  {name: "ACTIONS", uid: "actions"},
+  {name: "COMPETITION", uid: "competition"},
+  {name: "TOURNAMENT", uid: "tournament"},
+  {name: "LEVEL", uid: "level"},
+  {name: "PARTICIPANT-1", uid: "participant1"},
+  {name: "PARTICIPANT-1", uid: "participant2"},
+  {name: "WINNER", uid: "winner"},
 ];
 
-export function ListTable({ competitions, page, setPage, competitions_all, onDelete }) {
+export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
     const navigate = useNavigate()
     const headerColumns = columns;
 
-    const pages = Math.ceil(competitions_all.length / paginationCount);
+    const pages = Math.ceil(pairs_all.length / paginationCount);
 
     const items = useMemo(() => {
         const start = (page - 1) * paginationCount;
         const end = start + paginationCount;
 
-        return competitions_all.slice(start, end);
-    }, [page, competitions, paginationCount, competitions_all]);
+        return pairs.slice(start, end);
+    }, [page, pairs, paginationCount]);
 
 
-    const renderCell = useCallback((competition, columnKey) => {
-        const cellValue = competition[columnKey];
+    const renderCell = useCallback((pair, columnKey) => {
+        const cellValue = pair[columnKey];
         switch (columnKey) {
-            case "name":
+            case "competition":
                 return (
-                    <div className='flex items-center justify-center h-full'>
+                    <div className="flex flex-col">
+                        <p className="text-bold text-small capitalize">{cellValue?.name}</p>
+                    </div>
+                );
+            case "tournament":
+                return (
+                    <div className="flex flex-col">
+                        <p className="text-bold text-small capitalize">{cellValue?.gender}</p>
+                    </div>
+                );
+            case "level":
+                return (
+                    <div className="flex flex-col">
                         <p className="text-bold text-small capitalize">{cellValue}</p>
                     </div>
                 );
-            case "start_date":
+            case "gender":
                 return (
-                    <div className='flex items-center justify-center h-full'>
-                        <p className="text-bold text-small capitalize">{dateConvert(cellValue)  }</p>
-                    </div>
-                );
-            case "location":
-                return (
-                    <div className='flex items-center justify-center h-full'>
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
+                    <Chip className="capitalize" color={statusColorMap[pair.gender]} size="md" variant="flat">
+                        {cellValue === 1 ? 'Boy' : 'Girl'}
+                    </Chip>
                 );
             case "actions":
                 return (
                 <div className="relative flex justify-center items-center gap-1">
                     <button 
-                        onClick={() =>{navigate(`/competitions/${competition?.id}`)}}
+                        onClick={() =>{navigate(`/participants/${pair?.id}`)}}
                         className='p-2 border rounded-md border-blue-500 text-blue-500'
                     ><FaUser /></button>
                     <button 
-                        onClick={() =>{navigate(`/competitions/edit/${competition?.id}`)}}
                         className='p-2 border rounded-md border-blue-500 text-green-500'
                     ><FaRegEdit /></button>
                     <button 
-                        onClick={() => {deleteWarning(onDelete, competition?.id)}}
+                        onClick={() => {deleteWarning(onDelete, pair?.id)}}
                         className='p-2 border rounded-md border-blue-500 text-red-500'
                     ><FaRegTrashAlt /></button>
                 </div>
                 );
             default:
-                return (
-                    <div className='flex items-center justify-center'>
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
+                return cellValue;
         }
     }, []);
 
@@ -136,14 +143,14 @@ export function ListTable({ competitions, page, setPage, competitions_all, onDel
                 {(column) => (
                 <TableColumn
                     key={column.uid}
-                    align={"center"}
+                    align={column.uid === "actions" ? "center" : "start"}
                     allowsSorting={column.sortable}
                 >
                     {column.name}
                 </TableColumn>
                 )}
             </TableHeader>
-            <TableBody emptyContent={"No competition found"} items={competitions}>
+            <TableBody emptyContent={"No pairs found"} items={pairs}>
                 {(item) => (
                 <TableRow key={item.id}>
                     {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
