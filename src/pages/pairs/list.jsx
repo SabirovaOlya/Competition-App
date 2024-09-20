@@ -55,7 +55,7 @@ function PairList() {
 
   return (
     <div>
-      <PageTitle title={'Pairs'} onNavigate={onNavigate}/>
+      <PageTitle title={'Pairs'} onNavigate={onNavigate} is_exclude_form={true}/>
       <ListTable 
         pairs={pairs} 
         setPairs={setPairs}

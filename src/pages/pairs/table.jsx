@@ -86,10 +86,6 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
                             className='p-2 border rounded-md border-blue-500 text-blue-500'
                         ><FaUser /></button>
                         <button 
-                            onClick={() =>{navigate(`/pairs/edit/${pair?.id}`)}}
-                            className='p-2 border rounded-md border-blue-500 text-green-500'
-                        ><FaRegEdit /></button>
-                        <button 
                             onClick={() => {deleteWarning(onDelete, pair?.id)}}
                             className='p-2 border rounded-md border-blue-500 text-red-500'
                         ><FaRegTrashAlt /></button>
