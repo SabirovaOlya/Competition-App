@@ -12,8 +12,7 @@ import {
   Chip,
   Pagination,
 } from "@nextui-org/react";
-import { deleteWarning } from '../../components/alert/alert';
-import { paginationCount } from '../../utils/constants';
+import { deleteWarning } from '../../../components/alert/alert';
 
 const statusColorMap = {
     0: "danger",
@@ -22,76 +21,72 @@ const statusColorMap = {
 
 const columns = [
   {name: "ID", uid: "id"},
-  {name: "COMPETITION", uid: "competition"},
-  {name: "GENDER", uid: "tournament"},
-  {name: "LEVEL", uid: "level"},
-  {name: "PARTICIPANT-1", uid: "participant1"},
-  {name: "PARTICIPANT-1", uid: "participant2"},
-//   {name: "WINNER", uid: "winner"},
-    {name: "ACTIONS", uid: "actions"},
+  {name: "NAME", uid: "name"},
+  {name: "AGE", uid: "age"},
+  {name: "WEIGHT", uid: "weight"},
+  {name: "GENDER", uid: "gender"},
+  {name: "ACTIONS", uid: "actions"},
 ];
 
-export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
+export function ListTable({ users, page, setPage, users_all, onDelete }) {
+    console.log(users);
     const navigate = useNavigate()
+    const rowsPerPage = 10
     const headerColumns = columns;
 
-    const pages = Math.ceil(pairs_all.length / paginationCount);
+    const pages = Math.ceil(users_all.length / rowsPerPage);
 
     const items = useMemo(() => {
-        const start = (page - 1) * paginationCount;
-        const end = start + paginationCount;
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
 
-        return pairs.slice(start, end);
-    }, [page, pairs, paginationCount]);
+        return users.slice(start, end);
+    }, [page, users, rowsPerPage]);
 
 
-    const renderCell = useCallback((pair, columnKey) => {
-        const cellValue = pair[columnKey];
+    const renderCell = useCallback((user, columnKey) => {
+        const cellValue = user[columnKey];
         switch (columnKey) {
-            case "competition":
+            case "name":
                 return (
                     <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue?.name}</p>
+                        <p className="text-bold text-small capitalize">{user?.participant?.name}</p>
                     </div>
                 );
-            case "tournament":
+            case "age":
                 return (
-                    <Chip className="capitalize" color={statusColorMap[pair?.tournament?.gender]} size="md" variant="flat">
+                    <div className="flex flex-col">
+                        <p className="text-bold text-small capitalize">{user?.participant?.age}</p>
+                    </div>
+                );
+            case "weight":
+                return (
+                    <div className="flex flex-col">
+                        <p className="text-bold text-small capitalize">{user?.participant?.weight}</p>
+                    </div>
+                );
+            case "gender":
+                return (
+                    <Chip className="capitalize" color={statusColorMap[user?.participant?.gender]} size="md" variant="flat">
                         {cellValue === 1 ? 'Boy' : 'Girl'}
                     </Chip>
                 );
-            case "level":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
-            case "participant1":
-                return (
-                    <div className="flex flex-col relative">
-                        <span className={`absolute w-2 h-2 top-0 left-0 rounded ${pair?.winner ? pair?.winner === pair?.participant1?.id ? 'bg-green-500' : 'bg-red-500' : 'bg-yellow-400'}`}></span>
-                        <p className="ml-4 text-bold text-small capitalize">{cellValue?.name}</p>
-                    </div>
-                );
-            case "participant2":
-                return (
-                    <div className="flex flex-col relative">
-                        <span className={`absolute w-2 h-2 top-0 left-0 rounded ${pair?.winner ? pair?.winner === pair?.participant2?.id ? 'bg-green-500' : 'bg-red-500' : 'bg-yellow-400'}`}></span>
-                        <p className="ml-4 text-bold text-small capitalize">{cellValue?.name}</p>
-                    </div>
-                );
             case "actions":
                 return (
-                    <div className="relative flex justify-center items-center gap-1">
-                        <button 
-                            onClick={() =>{navigate(`/pairs/${pair?.id}`)}}
-                            className='p-2 border rounded-md border-blue-500 text-blue-500'
-                        ><FaUser /></button>
-                        <button 
-                            onClick={() => {deleteWarning(onDelete, pair?.id)}}
-                            className='p-2 border rounded-md border-blue-500 text-red-500'
-                        ><FaRegTrashAlt /></button>
-                    </div>
+                <div className="relative flex justify-center items-center gap-1">
+                    <button 
+                        onClick={() =>{navigate(`/finals/participants/${user?.id}`)}}
+                        className='p-2 border rounded-md border-blue-500 text-blue-500'
+                    ><FaUser /></button>
+                    <button 
+                        onClick={() =>{navigate(`/finals/participants/edit/${user?.id}`)}}
+                        className='p-2 border rounded-md border-blue-500 text-green-500'
+                    ><FaRegEdit /></button>
+                    <button 
+                        onClick={() => {deleteWarning(onDelete, user?.id)}}
+                        className='p-2 border rounded-md border-blue-500 text-red-500'
+                    ><FaRegTrashAlt /></button>
+                </div>
                 );
             default:
                 return cellValue;
@@ -100,13 +95,13 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
 
     const onNextPage = useCallback(() => {
         if (page < pages) {
-            setPage(page + 1);
+        setPage(page + 1);
         }
     }, [page, pages]);
 
     const onPreviousPage = useCallback(() => {
         if (page > 1) {
-            setPage(page - 1);
+        setPage(page - 1);
         }
     }, [page]);
 
@@ -156,7 +151,7 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
                 </TableColumn>
                 )}
             </TableHeader>
-            <TableBody emptyContent={"No pairs found"} items={pairs}>
+            <TableBody emptyContent={"No participants found"} items={users}>
                 {(item) => (
                 <TableRow key={item.id}>
                     {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

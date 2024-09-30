@@ -12,8 +12,8 @@ import {
   Chip,
   Pagination,
 } from "@nextui-org/react";
-import { deleteWarning } from '../../components/alert/alert';
-import { paginationCount } from '../../utils/constants';
+import { deleteWarning } from '../../../components/alert/alert';
+import { paginationCount } from '../../../utils/constants';
 
 const statusColorMap = {
     0: "danger",
@@ -21,17 +21,16 @@ const statusColorMap = {
 };
 
 const columns = [
-  {name: "ID", uid: "id"},
-  {name: "COMPETITION", uid: "competition"},
-  {name: "GENDER", uid: "tournament"},
-  {name: "LEVEL", uid: "level"},
-  {name: "PARTICIPANT-1", uid: "participant1"},
-  {name: "PARTICIPANT-1", uid: "participant2"},
-//   {name: "WINNER", uid: "winner"},
+    {name: "ID", uid: "id"},
+    {name: "COMPETITION", uid: "competition"},
+    {name: "GENDER", uid: "tournament"},
+    {name: "PARTICIPANT-1", uid: "participant1"},
+    {name: "PARTICIPANT-1", uid: "participant2"},
     {name: "ACTIONS", uid: "actions"},
 ];
 
 export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
+    console.log(pairs);
     const navigate = useNavigate()
     const headerColumns = columns;
 
@@ -60,33 +59,31 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
                         {cellValue === 1 ? 'Boy' : 'Girl'}
                     </Chip>
                 );
-            case "level":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
             case "participant1":
                 return (
                     <div className="flex flex-col relative">
                         <span className={`absolute w-2 h-2 top-0 left-0 rounded ${pair?.winner ? pair?.winner === pair?.participant1?.id ? 'bg-green-500' : 'bg-red-500' : 'bg-yellow-400'}`}></span>
-                        <p className="ml-4 text-bold text-small capitalize">{cellValue?.name}</p>
+                        <p className="ml-4 text-bold text-small capitalize">{pair?.participant1?.participant?.name}</p>
                     </div>
                 );
             case "participant2":
                 return (
                     <div className="flex flex-col relative">
                         <span className={`absolute w-2 h-2 top-0 left-0 rounded ${pair?.winner ? pair?.winner === pair?.participant2?.id ? 'bg-green-500' : 'bg-red-500' : 'bg-yellow-400'}`}></span>
-                        <p className="ml-4 text-bold text-small capitalize">{cellValue?.name}</p>
+                        <p className="ml-4 text-bold text-small capitalize">{pair?.participant2?.participant?.name}</p>
                     </div>
                 );
             case "actions":
                 return (
                     <div className="relative flex justify-center items-center gap-1">
                         <button 
-                            onClick={() =>{navigate(`/pairs/${pair?.id}`)}}
+                            onClick={() =>{navigate(`/finals/pairs/${pair?.id}`)}}
                             className='p-2 border rounded-md border-blue-500 text-blue-500'
                         ><FaUser /></button>
+                        <button 
+                            onClick={() =>{navigate(`/finals/pairs/edit/${pair?.id}`)}}
+                            className='p-2 border rounded-md border-blue-500 text-green-500'
+                        ><FaRegEdit /></button>
                         <button 
                             onClick={() => {deleteWarning(onDelete, pair?.id)}}
                             className='p-2 border rounded-md border-blue-500 text-red-500'
@@ -140,9 +137,7 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"
-            classNames={{
-                wrapper: "max-h-[500px]",
-            }}
+            classNames={{ wrapper: "max-h-[500px]",}}
             topContentPlacement="outside"
         >
             <TableHeader columns={headerColumns}>

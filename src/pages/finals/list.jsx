@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Button } from "@nextui-org/react"; 
-import { ListTable as ParticipantTable } from '../participants/table';
-import { ListTable as PairTable } from '../pairs/table';
+import { ListTable as ParticipantTable } from './participants/table';
+import { ListTable as PairTable } from './pairs/table';
 import { https } from '../../services/https';
 import { paginationCount } from '../../utils/constants';
 import { PageTitle } from '../../components/content-header/PageTitle';
@@ -33,8 +33,8 @@ function FinalList() {
         try {
             const res = await https.get('/finals-pairs/');
             const { data } = res;
-            setParticipantsAll(data)
-            setParticipants(data.slice(0, paginationCount));
+            setPairsAll(data)
+            setPairs(data.slice(0, paginationCount));
         } catch (err) {
             console.error(err);
         }
@@ -51,8 +51,8 @@ function FinalList() {
     }
 
     const onNavigate = () =>{
-        const url = activeTab === 'pairs' ? 'finals-pairs' : 'finals-participants'
-        navigate(`/${activeTab}/form`, { replace: true })
+        const url = activeTab === 'pairs' ? '/finals/pairs' : '/finals/participants'
+        navigate(`${url}/form`, { replace: true })
     }
 
     useEffect(() => {
