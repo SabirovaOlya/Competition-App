@@ -129,6 +129,7 @@ export function ListTable({ tournaments, page, setPage, tournaments_all, onDelet
 
     return (
         <Table
+            aria-label='tournaments'
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"

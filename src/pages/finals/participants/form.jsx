@@ -65,13 +65,12 @@ function FinalParticipantForm() {
     const onSubmit = async(data) =>{
         const info = {
             competition: selectedCompetition?.value,
-            tournament: setSelectedTournament?.value,
+            tournament: selectedTournament?.value,
             participant: selectedParticipant?.value
         };
 
         try{
-            const res = await https.post('finals-participants', info)
-            const { data } = res;
+            const res = await https.post('/finals-participants/', info)
             alert("Successfully created", 'success');
             navigate(`/finals`, { replace: true });
         }
@@ -93,6 +92,9 @@ function FinalParticipantForm() {
                     className="bg-white w-full" 
                     defaultSelectedKeys={[selectedCompetition?.value]}
                     value={[selectedCompetition?.value]}
+                    onChange={(e) => {
+                        setSelectedCompetition(competitions?.find(x => x?.value === Number(e.target.value)));
+                    }}
                 >
                 {competitions?.map((comp) => (
                     <SelectItem key={comp?.value} className='bg-white'>
@@ -106,6 +108,9 @@ function FinalParticipantForm() {
                     className="bg-white w-full" 
                     defaultSelectedKeys={[selectedTournament?.value]}
                     value={[selectedTournament?.value]}
+                    onChange={(e) => {
+                        setSelectedTournament(tournaments?.find(x => x?.value === Number(e.target.value)));
+                    }}
                 >
                 {tournaments?.map((tour) => (
                     <SelectItem key={tour?.value} className='bg-white'>
@@ -119,6 +124,9 @@ function FinalParticipantForm() {
                     className="bg-white w-full" 
                     defaultSelectedKeys={[selectedParticipant?.value]}
                     value={[selectedParticipant?.value]}
+                    onChange={(e) => {
+                        setSelectedParticipant(participants?.find(x => x?.value === Number(e.target.value)));
+                    }}
                 >
                 {participants?.map((partic) => (
                     <SelectItem key={partic?.value} className='bg-white'>

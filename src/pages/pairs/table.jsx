@@ -137,6 +137,7 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
 
     return (
         <Table
+            aria-label='pairs'
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"

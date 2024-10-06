@@ -29,7 +29,6 @@ const columns = [
 ];
 
 export function ListTable({ users, page, setPage, users_all, onDelete }) {
-    console.log(users);
     const navigate = useNavigate()
     const rowsPerPage = 10
     const headerColumns = columns;
@@ -68,7 +67,7 @@ export function ListTable({ users, page, setPage, users_all, onDelete }) {
             case "gender":
                 return (
                     <Chip className="capitalize" color={statusColorMap[user?.participant?.gender]} size="md" variant="flat">
-                        {cellValue === 1 ? 'Boy' : 'Girl'}
+                        {user?.participant?.gender === 1 ? 'Boy' : 'Girl'}
                     </Chip>
                 );
             case "actions":
@@ -132,6 +131,7 @@ export function ListTable({ users, page, setPage, users_all, onDelete }) {
 
     return (
         <Table
+            aria-label='final-participants'
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"

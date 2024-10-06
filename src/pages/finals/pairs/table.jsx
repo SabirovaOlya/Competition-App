@@ -30,7 +30,6 @@ const columns = [
 ];
 
 export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
-    console.log(pairs);
     const navigate = useNavigate()
     const headerColumns = columns;
 
@@ -134,6 +133,7 @@ export function ListTable({ pairs, page, setPage, pairs_all, onDelete }) {
 
     return (
         <Table
+            aria-label='final-pairs'
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"

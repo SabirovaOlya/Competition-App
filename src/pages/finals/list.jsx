@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tabs, Tab, Button } from "@nextui-org/react"; 
+import { Tabs, Tab } from "@nextui-org/react"; 
 import { ListTable as ParticipantTable } from './participants/table';
 import { ListTable as PairTable } from './pairs/table';
 import { https } from '../../services/https';
@@ -74,7 +74,6 @@ function FinalList() {
             const res = await https.delete(`/${url}/${id}`)
             const { data } = res;
 
-
             if(activeTab === 'participants'){
                 getDataParticipant();
             }else {
@@ -95,7 +94,7 @@ function FinalList() {
                     onSelectionChange={setActiveTab}
                 >
                     <Tab key="participants" title="Participants"/>
-                    <Tab key="pair" title="Pairs"/>
+                    <Tab key="pairs" title="Pairs"/>
                 </Tabs>
             </div>
             <div className='mt-3'>

@@ -40,7 +40,7 @@ function CompetitionEdit() {
     }
 
     try{
-      const res = await https.put(`/competitions/${id}`, info)
+      const res = await https.put(`/competitions/${id}/`, info)
       const res_data = res?.data;
       alert("Successfully edited", 'success');
       navigate(`/competitions`, { replace: true });

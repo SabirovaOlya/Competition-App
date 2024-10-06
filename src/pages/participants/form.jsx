@@ -35,28 +35,6 @@ function ParticipantForm() {
   }, []);
 
   const onSubmit = async(data) =>{
-    // const info = {
-    //   ...data,
-    //   unique_id: data.unique_id, 
-    //   age: Number(data.age),
-    //   weight: data.weight ? Number(data.weight) : null, 
-    //   competition: selectedCompetition?.value,
-    //   gender: selectedGender?.value === 'male' ? 1 : 0,
-    //   image: sourceImages?.[0] ? sourceImages?.[0] : null
-    // };
-
-    // try{
-    //   const res = await https.post('participants', info)
-    //   const { data } = res;
-    //   alert("Successfully created", 'success');
-    //   navigate(`/participants`, { replace: true });
-    //   // navigate(`/participants/single/${data.id}`, { replace: true });
-    // }
-    // catch(err){
-    //   alert(err?.response?.data?.message, 'error');
-    //   console.log(err);
-    // }
-
     const formData = new FormData();
 
     formData.append('name', data.name);
@@ -136,6 +114,9 @@ function ParticipantForm() {
             className="bg-white w-full" 
             defaultSelectedKeys={[selectedCompetition?.value]}
             value={[selectedCompetition?.value]}
+            onChange={(e) => {
+              setSelectedCompetition(competitions?.find(x => x?.value === Number(e.target.value)));
+            }}
           >
             {competitions?.map((comp) => (
               <SelectItem key={comp?.value} className='bg-white'>

@@ -5,6 +5,7 @@ import { Select, SelectItem } from '@nextui-org/react';
 import { https } from '../../../services/https';
 import { BackButton } from '../../../components/buttons/BackButton';
 import { alert } from '../../../components/alert/alert'
+import { stages } from '../../../utils/constants';
 
 
 function FinalPairForm() {
@@ -13,6 +14,7 @@ function FinalPairForm() {
     const [selectedCompetition, setSelectedCompetition] = useState(null);
     const [tournaments, setTournaments] = useState([]);
     const [selectedTournament, setSelectedTournament] = useState(null);
+    const [stage, setStage] = useState(null);
     const [participants, setParticipants] = useState([]);
     const [selectedParticipant1, setSelectedParticipant1] = useState(null);
     const [selectedParticipant2, setSelectedParticipant2] = useState(null);
@@ -48,7 +50,8 @@ function FinalPairForm() {
         try{
             const res = await https.get('/finals-participants/')
             const { data } = res;
-            const partics = data?.map(item => ({ value: item?.id, label: item?.name}))
+            const partics = data?.map(item => ({ value: item?.id, label: item?.participant?.name}))
+            console.log(partics);
             setParticipants(partics)
             setSelectedParticipant1(partics[0] || null)
             setSelectedParticipant2(partics[1] || null)
@@ -68,13 +71,13 @@ function FinalPairForm() {
         const info = {
             competition: selectedCompetition?.value,
             tournament: selectedTournament?.value,
+            stage: stage?.value,
             participant1: selectedParticipant1?.value,
             participant2: selectedParticipant2?.value
         };
 
         try{
-            const res = await https.post('finals-participants', info)
-            const { data } = res;
+            const res = await https.post('/finals-pairs/', info)
             alert("Successfully created", 'success');
             navigate(`/finals`, { replace: true });
         }
@@ -87,7 +90,7 @@ function FinalPairForm() {
     return (
     <div className="mt-4">
         <BackButton path={'/finals'}/>
-        <h3 className='text-center'>Final Participant Form</h3>
+        <h3 className='text-center'>Final Pair Form</h3>
         <form onSubmit={handleSubmit(onSubmit)} className='mt-8 px-4'>
             <div className='bg-white grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <Select 
@@ -96,6 +99,9 @@ function FinalPairForm() {
                     className="bg-white w-full" 
                     defaultSelectedKeys={[selectedCompetition?.value]}
                     value={[selectedCompetition?.value]}
+                    onChange={(e) => {
+                        setSelectedCompetition(competitions?.find(x => x?.value === Number(e.target.value)));
+                    }}
                 >
                 {competitions?.map((comp) => (
                     <SelectItem key={comp?.value} className='bg-white'>
@@ -109,6 +115,9 @@ function FinalPairForm() {
                     className="bg-white w-full" 
                     defaultSelectedKeys={[selectedTournament?.value]}
                     value={[selectedTournament?.value]}
+                    onChange={(e) => {
+                        setSelectedTournament(tournaments?.find(x => x?.value === Number(e.target.value)));
+                    }}
                 >
                 {tournaments?.map((tour) => (
                     <SelectItem key={tour?.value} className='bg-white'>
@@ -116,13 +125,31 @@ function FinalPairForm() {
                     </SelectItem>
                 ))}
                 </Select>
-
+                <Select 
+                    label="Stage" 
+                    color='white'
+                    className="bg-white w-full" 
+                    defaultSelectedKeys={[stage?.value]}
+                    value={[stage?.value]}
+                    onChange={(e) => {
+                        setStage(stages?.find(x => x?.value === e.target.value));
+                    }}
+                >
+                {stages?.map((tour) => (
+                    <SelectItem key={tour?.value} className='bg-white'>
+                    {tour?.label}
+                    </SelectItem>
+                ))}
+                </Select>
                 <Select 
                     label="Participant-1" 
                     color='white'
                     className="bg-white w-full" 
                     defaultSelectedKeys={[selectedParticipant1?.value]}
                     value={[selectedParticipant1?.value]}
+                    onChange={(e) => {
+                        setSelectedParticipant1(participants?.find(x => x?.value === Number(e.target.value)));
+                    }}
                 >
                 {participants?.map((partic) => (
                     <SelectItem key={partic?.value} className='bg-white'>
@@ -136,6 +163,9 @@ function FinalPairForm() {
                     className="bg-white w-full" 
                     defaultSelectedKeys={[selectedParticipant2?.value]}
                     value={[selectedParticipant2?.value]}
+                    onChange={(e) => {
+                        setSelectedParticipant2(participants?.find(x => x?.value === Number(e.target.value)));
+                    }}
                 >
                 {participants?.map((partic) => (
                     <SelectItem key={partic?.value} className='bg-white'>

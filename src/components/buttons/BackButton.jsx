@@ -11,7 +11,6 @@ export const BackButton = ({ path }) =>{
             <Button
                 className="text-lg"
                 onClick={(e) =>{
-                    console.log('Navigating back');
                     navigate(path, { replace: true})
                 }}
                 color="danger" variant="bordered" startContent={<IoIosBackspace />}

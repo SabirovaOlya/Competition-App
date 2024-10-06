@@ -106,6 +106,9 @@ function PairForm() {
                         className="bg-white w-full" 
                         defaultSelectedKeys={[selectedCompetition?.value]}
                         value={[selectedCompetition?.value]}
+                        onChange={(e) => {
+                            setSelectedCompetition(competitions?.find(x => x?.value === Number(e.target.value)));
+                        }}
                     >
                         {competitions?.map((comp) => (
                         <SelectItem key={comp?.value} className='bg-white'>
@@ -119,6 +122,9 @@ function PairForm() {
                         className="bg-white w-full" 
                         defaultSelectedKeys={[selectedTournament?.value]}
                         value={[selectedTournament?.value]}
+                        onChange={(e) => {
+                            setSelectedTournament(tournaments?.find(x => x?.value === Number(e.target.value)));
+                        }}
                     >
                         {tournaments?.map((tour) => (
                         <SelectItem key={tour?.value} className='bg-white'>
@@ -132,6 +138,9 @@ function PairForm() {
                         className="bg-white w-full" 
                         defaultSelectedKeys={[participant1?.value]}
                         value={[participant1?.value]}
+                        onChange={(e) => {
+                            setParticipant1(participants?.find(x => x?.value === Number(e.target.value)));
+                        }}
                     >
                         {participants?.map((participant) => (
                         <SelectItem key={participant?.value} className='bg-white'>
@@ -145,6 +154,9 @@ function PairForm() {
                         className="bg-white w-full" 
                         defaultSelectedKeys={[participant2?.value]}
                         value={[participant2?.value]}
+                        onChange={(e) => {
+                            setParticipant2(participants?.find(x => x?.value === Number(e.target.value)));
+                        }}
                     >
                         {participants?.map((participant) => (
                         <SelectItem key={participant?.value} className='bg-white'>

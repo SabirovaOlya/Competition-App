@@ -5,7 +5,7 @@ import { alert } from "../../components/alert/alert"
 import './style.scss'
 
 
-function ImageContainer({ sourceImages, setSourceImages, limit }) {
+function ImageContainer({ sourceImages, setSourceImages, limit, path, setPath }) {
     const imageInput = useRef(null)
     const [selectedImages, setSelectedImages] = useState([]);
 
@@ -34,45 +34,15 @@ function ImageContainer({ sourceImages, setSourceImages, limit }) {
         setSourceImages([...sourse, ...sourceImages]);
     }, [selectedImages, sourceImages]);
 
-    // const addImage = async () => {
-    //     const images = new FormData()
-    //     if (sourceImages.length > 0) {
-    //         document.body.style.overflowY = 'hidden'
-    //         sourceImages.forEach((image, i) => {
-    //             images.append(`image[${i}]`, image);
-    //         });
-    //         await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload-photo`, images, {
-    //             headers: {
-    //             "Authorization": "Bearer " + window.localStorage.getItem('token'),
-    //             "Content-Type": "multipart/form-data",
-    //             }
-    //         })
-    //             .then(res => {
-    //             setPath([...path, ...res?.data?.data])
-    //             setSourceImages([])
-    //             setSelectedImages([])
-    //             alert("Rasmlar qo'shildi", 'success', 1500)
-    //             setTimeout(() => {
-    //                 document.body.style.overflowY = 'scroll'
-    //             }, 1550);
-
-    //             })
-    //             .catch(err => {
-    //             alert(err?.response?.data?.message, 'error', 1500)
-    //             setTimeout(() => {
-    //                 document.body.style.overflowY = 'scroll'
-    //             }, 1550);
-    //             })
-    //     }else {
-    //         alert('Rasm tanlang!', 'error')
-    //     }
-    // }
-
-    function imageDelete(id) {
-        const newSelectedImages = selectedImages.filter((_, i) => i !== id);
-        const newSourceImages = sourceImages.filter((_, i) => i !== id);
-        setSelectedImages([...newSelectedImages])
-        setSourceImages([...newSourceImages])
+    function imageDelete(id, is_path) {
+        if(is_path){
+            setPath('')
+        }else{
+            const newSelectedImages = selectedImages.filter((_, i) => i !== id);
+            const newSourceImages = sourceImages.filter((_, i) => i !== id);
+            setSelectedImages([...newSelectedImages])
+            setSourceImages([...newSourceImages])
+        }
     }
 
     return (
@@ -81,7 +51,7 @@ function ImageContainer({ sourceImages, setSourceImages, limit }) {
             <div className='wrapper_photo_add'>
                 <div className='photo_add_buttons'>
                     { 
-                        limit && selectedImages?.length === 1 ?
+                        (limit && selectedImages?.length === 1) || path ?
                         <></> :
                         <button type='button' onClick={photoOpen}>
                             Choose an image <MdPhotoSizeSelectLarge className='icon_load' />
@@ -91,17 +61,29 @@ function ImageContainer({ sourceImages, setSourceImages, limit }) {
                 <input ref={imageInput} type="file" accept="image/*" onChange={handleImageChange} />
                 <div className='photo_images'>
                     {
+                        path && (<div className='image_container' key={'path'}>
+                            <img
+                                width="200"
+                                src={path}
+                                alt='image is not uploaded'
+                                className='photo_show'
+                                style={{ objectFit: 'contain' }}
+                            />
+                            <button type='button' onClick={() => { imageDelete(1, true) }}><AiFillCloseSquare className='icon_no' /></button>
+                        </div>)
+                    }
+                    {
                         selectedImages?.map((image, index) => {
                             return (
                                 <div className='image_container' key={index}>
-                                <img
-                                    width="200"
-                                    src={image?.src}
-                                    alt='image is not uploaded'
-                                    className='photo_show'
-                                    style={{ objectFit: 'contain' }}
-                                />
-                                <button type='button' onClick={() => { imageDelete(index) }}><AiFillCloseSquare className='icon_no' /></button>
+                                    <img
+                                        width="200"
+                                        src={image?.src}
+                                        alt='image is not uploaded'
+                                        className='photo_show'
+                                        style={{ objectFit: 'contain' }}
+                                    />
+                                    <button type='button' onClick={() => { imageDelete(index, false) }}><AiFillCloseSquare className='icon_no' /></button>
                                 </div>
                             )
                         })

@@ -48,7 +48,7 @@ function TournamentEdit() {
     }
     
     try{
-        const res = await https.put(`/tournaments/${id}`, info)
+        const res = await https.put(`/tournaments/${id}/`, info)
         const res_data = res?.data;
         alert("Successfully edited", 'success');
         navigate(`/tournaments`, { replace: true });

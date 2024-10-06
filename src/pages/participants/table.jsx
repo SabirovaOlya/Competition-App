@@ -78,6 +78,7 @@ export function ListTable({ users, page, setPage, users_all, onDelete }) {
                         className='p-2 border rounded-md border-blue-500 text-blue-500'
                     ><FaUser /></button>
                     <button 
+                        onClick={() =>{navigate(`/participants/edit/${user?.id}`)}}
                         className='p-2 border rounded-md border-blue-500 text-green-500'
                     ><FaRegEdit /></button>
                     <button 
@@ -130,6 +131,7 @@ export function ListTable({ users, page, setPage, users_all, onDelete }) {
 
     return (
         <Table
+            aria-label='participants'
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"

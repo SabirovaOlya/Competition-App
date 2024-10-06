@@ -58,32 +58,35 @@ function PairSingle() {
       <BackButton path={'/pairs'} />
       <h4 className='text-center'>{pair?.competition?.name}</h4>
       <h5 className='text-center'>{pair?.level} Level</h5>
-      <div className='mt-8 flex justify-around'>
+      <div className='mt-8 flex flex-col md:flex-row justify-around'>
         {
           [pair?.participant1, pair?.participant2]?.map(participant =>(
-            <div className={`border-3 ${getBorderColor(participant?.id)} ${getBackColor(participant?.id)} rounded overflow-hidden`}>
+            <div className={`border-3 ${getBorderColor(participant?.id)} ${getBackColor(participant?.id)} flex md:flex-col rounded overflow-hidden mt-4 md:mt-0`}>
               <img 
-                className='min-w-80'
-                src={participant?.image ? participant?.image : user_image} />
-              <div className='p-2 text-sm'>
-                <p className='m-0 mt-2'><span className='font-bold'>Name: </span>{participant?.name}</p>
-                <p className='m-0 mt-2'><span className='font-bold'>ID: </span>{participant?.unique_id}</p>
-                <p className='m-0 mt-2'><span className='font-bold'>Age: </span>{participant?.age} years</p>
-                <p className='m-0 mt-2'><span className='font-bold'>Weight: </span>{participant?.weight} kg</p>
-                <p className='m-0 mt-2'><span className='font-bold'>Gender: </span>{participant?.gender === 1 ? 'Boy' : 'Girl'}</p>
-              </div>
-              {
-                pair?.winner ? 
-                <></> : 
-                <div className='flex justify-center'>
-                  <button 
-                    onClick={() => {changeWinner(participant?.id)}}
-                    className='mb-2 border-1 border-green-500 bg-green-100 p-2 rounded text-sm font-bold duration-200 hover:bg-green-400'
-                  >
-                    Make winner
-                  </button>
+                className='w-50 md:min-w-80'
+                src={participant?.image ? participant?.image : user_image} 
+              />
+              <div className='flex flex-col ml-2 md:ml-0'>
+                <div className='p-2 text-sm'>
+                  <p className='m-0 mt-2'><span className='font-bold'>Name: </span>{participant?.name}</p>
+                  <p className='m-0 mt-2'><span className='font-bold'>ID: </span>{participant?.unique_id}</p>
+                  <p className='m-0 mt-2'><span className='font-bold'>Age: </span>{participant?.age} years</p>
+                  <p className='m-0 mt-2'><span className='font-bold'>Weight: </span>{participant?.weight} kg</p>
+                  <p className='m-0 mt-2'><span className='font-bold'>Gender: </span>{participant?.gender === 1 ? 'Boy' : 'Girl'}</p>
                 </div>
-              }
+                {
+                  pair?.winner ? 
+                  <></> : 
+                  <div className='flex md:justify-center'>
+                    <button 
+                      onClick={() => {changeWinner(participant?.id)}}
+                      className='mb-2 border-1 border-green-500 bg-green-100 p-2 rounded text-sm font-bold duration-200 hover:bg-green-400'
+                    >
+                      Make winner
+                    </button>
+                  </div>
+                }
+              </div>
             </div>
           ))
         }
